@@ -1,0 +1,26 @@
+<h2>Contacts</h2>
+
+<p>
+  <a href="#">Add New Contact</a>
+</p>
+
+<div *ngIf="contacts.length === 0" class="alert alert-warning">No contacts have been added.</div>
+
+<ng-container *ngIf="contacts.length > 0">
+  <table class="table table-bordered table-striped table-hover table-responsive">
+    <thead>
+      <tr>
+        <th>Last Name</th>
+        <th>First Name</th>
+        <th>Display Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let contact of contacts">
+        <td>{{contact.lastName}}</td>
+        <td>{{contact.firstName}}</td>
+        <td>{{contact.displayName}}</td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>

@@ -13,29 +13,29 @@ namespace AddressBook.Api.Services
             _contactRepository = contactRepository;
         }
 
-        public Contact Add(ContactDto contactDto)
+        public Contact AddContact(ContactDto contactDto)
         {
-            return _contactRepository.Add(contactDto);
+            return _contactRepository.AddContact(contactDto);
         }
 
-        public Contact Delete(int id)
+        public Contact DeleteContact(int id)
         {
-            return _contactRepository.Delete(id);
+            return _contactRepository.DeleteContact(id);
         }
 
-        public Contact Get(int id)
+        public Contact GetContact(int id)
         {
-            return _contactRepository.Get(id);
+            return _contactRepository.GetContact(id);
         }
 
-        public List<Contact> List(string filters, string sorts)
+        public List<Contact> ListContacts(string filters, string sorts)
         {
-            return _contactRepository.List(filters, sorts, "lastName,firstName,middleName,displayName");
+            return _contactRepository.ListContacts(filters, sorts, "lastName,firstName,middleName,displayName");
         }
 
-        public Contact Update(int id, ContactDto contactDto)
+        public Contact UpdateContact(int id, ContactDto contactDto)
         {
-            return _contactRepository.Update(id, contactDto);
+            return _contactRepository.UpdateContact(id, contactDto);
         }
     }
 }

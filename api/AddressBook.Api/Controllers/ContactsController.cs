@@ -20,21 +20,21 @@ namespace AddressBook.Api.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Contact> Add(ContactDto contactDto)
+        public ActionResult<Contact> AddContact(ContactDto contactDto)
         {
             if (ModelState.IsValid)
             {
-                var contact = _contactService.Add(contactDto);
-                return CreatedAtAction(nameof(Get), new { id = contact.ContactId }, contact);
+                var contact = _contactService.AddContact(contactDto);
+                return CreatedAtAction(nameof(GetContact), new { id = contact.ContactId }, contact);
             }
             return BadRequest();
         }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Contact> Delete(int id)
+        public ActionResult<Contact> DeleteContact(int id)
         {
-            var contact = _contactService.Delete(id);
+            var contact = _contactService.DeleteContact(id);
             if (contact != null)
             {
                 return contact;
@@ -44,9 +44,9 @@ namespace AddressBook.Api.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Contact> Get(int id)
+        public ActionResult<Contact> GetContact(int id)
         {
-            Contact contact = _contactService.Get(id);
+            Contact contact = _contactService.GetContact(id);
             if (contact != null)
             {
                 return contact;
@@ -55,19 +55,19 @@ namespace AddressBook.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Contact>> List(string filters, string sorts)
+        public ActionResult<IEnumerable<Contact>> ListContacts(string filters, string sorts)
         {
-            return _contactService.List(filters, sorts);
+            return _contactService.ListContacts(filters, sorts);
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Contact> Update(int id, ContactDto contactDto)
+        public ActionResult<Contact> UpdateContact(int id, ContactDto contactDto)
         {
             if (ModelState.IsValid)
             {
-                Contact contact = _contactService.Update(id, contactDto);
+                Contact contact = _contactService.UpdateContact(id, contactDto);
                 if (contact != null)
                 {
                     return contact;

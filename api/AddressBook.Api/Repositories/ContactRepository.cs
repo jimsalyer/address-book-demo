@@ -22,7 +22,7 @@ namespace AddressBook.Api.Repositories
             _sieveProcessor = sieveProcessor;
         }
 
-        public Contact Add(ContactDto contactDto)
+        public Contact AddContact(ContactDto contactDto)
         {
             var contact = _mapper.Map<Contact>(contactDto);
             _dbContext.Add(contact);
@@ -30,7 +30,7 @@ namespace AddressBook.Api.Repositories
             return contact;
         }
 
-        public Contact Delete(int id)
+        public Contact DeleteContact(int id)
         {
             var contact = _dbContext.Contacts.Find(id);
             if (contact != null)
@@ -41,14 +41,14 @@ namespace AddressBook.Api.Repositories
             return contact;
         }
 
-        public Contact Get(int id)
+        public Contact GetContact(int id)
         {
             return _dbContext.Contacts
                 .AsNoTracking()
                 .FirstOrDefault(c => c.ContactId == id);
         }
 
-        public List<Contact> List(string filters, string sorts, string defaultSorts)
+        public List<Contact> ListContacts(string filters, string sorts, string defaultSorts)
         {
             var sieveModel = new SieveModel
             {
@@ -61,7 +61,7 @@ namespace AddressBook.Api.Repositories
             return contactsResult.ToList();
         }
 
-        public Contact Update(int id, ContactDto contactDto)
+        public Contact UpdateContact(int id, ContactDto contactDto)
         {
             var contact = _dbContext.Contacts.Find(id);
             if (contact != null)
