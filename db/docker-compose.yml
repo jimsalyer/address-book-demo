@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+
+  db_engine:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: dbpassword
+      POSTGRES_DB: address_book_demo
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./scripts/schema.sql:/docker-entrypoint-initdb.d/1_schema.sql
