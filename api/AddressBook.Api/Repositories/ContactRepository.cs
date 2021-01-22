@@ -2,22 +2,29 @@ using System.Collections.Generic;
 using System.Linq;
 using AddressBook.Api.DataAccess;
 using AddressBook.Api.Models;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Sieve.Models;
+using Sieve.Services;
 
 namespace AddressBook.Api.Repositories
 {
     public class ContactRepository : IContactRepository
     {
         private readonly AddressBookDbContext _dbContext;
+        private readonly IMapper _mapper;
+        private readonly ISieveProcessor _sieveProcessor;
 
-        public ContactRepository(AddressBookDbContext dbContext)
+        public ContactRepository(AddressBookDbContext dbContext, IMapper mapper, ISieveProcessor sieveProcessor)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
+            _sieveProcessor = sieveProcessor;
         }
 
         public Contact Add(ContactDto contactDto)
         {
-            Contact contact = (Contact)contactDto.Clone();
+            var contact = _mapper.Map<Contact>(contactDto);
             _dbContext.Add(contact);
             _dbContext.SaveChanges();
             return contact;
@@ -25,7 +32,7 @@ namespace AddressBook.Api.Repositories
 
         public Contact Delete(int id)
         {
-            Contact contact = _dbContext.Contacts.Find(id);
+            var contact = _dbContext.Contacts.Find(id);
             if (contact != null)
             {
                 _dbContext.Remove(contact);
@@ -41,30 +48,25 @@ namespace AddressBook.Api.Repositories
                 .FirstOrDefault(c => c.ContactId == id);
         }
 
-        public List<Contact> List()
+        public List<Contact> List(string filters, string sorts, string defaultSorts)
         {
-            return _dbContext.Contacts
-                .AsNoTracking()
-                .ToList();
+            var sieveModel = new SieveModel
+            {
+                Filters = filters,
+                Sorts = !string.IsNullOrWhiteSpace(sorts) ? sorts : defaultSorts
+            };
+
+            var contacts = _dbContext.Contacts.AsNoTracking();
+            var contactsResult = _sieveProcessor.Apply(sieveModel, contacts);
+            return contactsResult.ToList();
         }
 
         public Contact Update(int id, ContactDto contactDto)
         {
-            Contact contact = _dbContext.Contacts.Find(id);
+            var contact = _dbContext.Contacts.Find(id);
             if (contact != null)
             {
-                contact.FirstName = contactDto.FirstName;
-                contact.MiddleName = contactDto.MiddleName;
-                contact.LastName = contactDto.LastName;
-                contact.DisplayName = contactDto.DisplayName;
-                contact.StreetAddress = contactDto.StreetAddress;
-                contact.City = contactDto.City;
-                contact.Region = contactDto.Region;
-                contact.PostalCode = contactDto.PostalCode;
-                contact.Country = contactDto.Country;
-                contact.PhoneNumber = contactDto.PhoneNumber;
-                contact.EmailAddress = contactDto.EmailAddress;
-
+                _mapper.Map(contactDto, contact);
                 _dbContext.Contacts.Update(contact);
                 _dbContext.SaveChanges();
             }

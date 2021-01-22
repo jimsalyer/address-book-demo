@@ -28,9 +28,9 @@ namespace AddressBook.Api.Services
             return _contactRepository.Get(id);
         }
 
-        public List<Contact> List()
+        public List<Contact> List(string filters, string sorts)
         {
-            return _contactRepository.List();
+            return _contactRepository.List(filters, sorts, "lastName,firstName,middleName,displayName");
         }
 
         public Contact Update(int id, ContactDto contactDto)

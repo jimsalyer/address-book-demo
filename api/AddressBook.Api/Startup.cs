@@ -1,3 +1,4 @@
+using AutoMapper;
 using AddressBook.Api.DataAccess;
 using AddressBook.Api.Repositories;
 using AddressBook.Api.Services;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Sieve.Services;
 
 namespace AddressBook.Api
 {
@@ -25,6 +27,10 @@ namespace AddressBook.Api
         {
             services.AddDbContext<AddressBookDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("AddressBookConnectionString")));
+
+            services.AddAutoMapper(typeof(Startup));
+
+            services.AddScoped<ISieveProcessor, SieveProcessor>();
 
             services.AddTransient<IContactRepository, ContactRepository>();
             services.AddTransient<IContactService, ContactService>();

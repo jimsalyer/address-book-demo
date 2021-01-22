@@ -55,9 +55,9 @@ namespace AddressBook.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Contact>> List()
+        public ActionResult<IEnumerable<Contact>> List(string filters, string sorts)
         {
-            return _contactService.List();
+            return _contactService.List(filters, sorts);
         }
 
         [HttpPut("{id}")]
