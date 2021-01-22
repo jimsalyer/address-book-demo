@@ -10,6 +10,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ContactAddComponent } from './components/contact-add/contact-add.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContactFormComponent } from './components/contact-form/contact-form.component';
+import { ContactUpdateComponent } from './components/contact-update/contact-update.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ContactFormComponent } from './components/contact-form/contact-form.com
     NavbarComponent,
     HomeComponent,
     ContactAddComponent,
-    ContactFormComponent
+    ContactFormComponent,
+    ContactUpdateComponent
   ],
   imports: [
     AppRoutingModule,

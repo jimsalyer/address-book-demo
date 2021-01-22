@@ -10,15 +10,15 @@ import { ContactService } from '../../services/contact.service';
 })
 export class ContactAddComponent implements OnInit {
   constructor(
-    private contactService: ContactService,
-    private router: Router
+    private router: Router,
+    private service: ContactService
   ) { }
 
   ngOnInit(): void {
   }
 
   onSubmit(contact: Contact): void {
-    this.contactService.addContact(contact).subscribe(
+    this.service.addContact(contact).subscribe(
       () => this.router.navigate(['/contacts'])
     );
   }

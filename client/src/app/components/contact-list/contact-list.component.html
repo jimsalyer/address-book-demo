@@ -1,7 +1,7 @@
 <h2>Contacts</h2>
 
 <p>
-  <a [routerLink]="['/contacts/add']" class="btn btn-success">Add New</a>
+  <a [routerLink]="['/contacts/new']" class="btn btn-success">Add New</a>
 </p>
 
 <div *ngIf="contacts.length === 0" class="alert alert-warning">No contacts have been added.</div>
@@ -14,8 +14,7 @@
         <p class="card-text">{{contact.lastName}}, {{contact.firstName}} {{contact.middleName}}</p>
       </div>
       <div class="card-footer">
-        <a href="#" class="btn btn-info mr-2">Edit</a>
-        <a href="#" class="btn btn-danger">Delete</a>
+        <a [routerLink]="['/contacts', contact.contactId]" class="btn btn-info btn-block">Update</a>
       </div>
     </div>
   </div>

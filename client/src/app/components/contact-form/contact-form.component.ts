@@ -1,6 +1,6 @@
-import { Contact } from './../../models/contact';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Contact } from './../../models/contact';
 
 @Component({
   selector: 'app-contact-form',
@@ -8,21 +8,20 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./contact-form.component.scss']
 })
 export class ContactFormComponent implements OnInit {
-  @Input() contact = new Contact();
   @Output() submitted = new EventEmitter<Contact>();
 
   form = new FormGroup({
-    firstName: new FormControl(this.contact.firstName),
-    middleName: new FormControl(this.contact.middleName),
-    lastName: new FormControl(this.contact.lastName),
-    displayName: new FormControl(this.contact.displayName),
-    streetAddress: new FormControl(this.contact.streetAddress),
-    city: new FormControl(this.contact.city),
-    region: new FormControl(this.contact.region),
-    postalCode: new FormControl(this.contact.postalCode),
-    country: new FormControl(this.contact.country),
-    phoneNumber: new FormControl(this.contact.phoneNumber),
-    emailAddress: new FormControl(this.contact.emailAddress)
+    firstName: new FormControl(),
+    middleName: new FormControl(),
+    lastName: new FormControl(),
+    displayName: new FormControl(),
+    streetAddress: new FormControl(),
+    city: new FormControl(),
+    region: new FormControl(),
+    postalCode: new FormControl(),
+    country: new FormControl(),
+    phoneNumber: new FormControl(),
+    emailAddress: new FormControl()
   });
 
   constructor() { }
@@ -32,5 +31,21 @@ export class ContactFormComponent implements OnInit {
 
   onSubmit(): void {
     this.submitted.emit(this.form.value);
+  }
+
+  updateForm(contact: Contact): void {
+    this.form.setValue({
+      firstName: contact.firstName,
+      middleName: contact.middleName,
+      lastName: contact.lastName,
+      displayName: contact.displayName,
+      streetAddress: contact.streetAddress,
+      city: contact.city,
+      region: contact.region,
+      postalCode: contact.postalCode,
+      country: contact.country,
+      phoneNumber: contact.phoneNumber,
+      emailAddress: contact.emailAddress
+    });
   }
 }

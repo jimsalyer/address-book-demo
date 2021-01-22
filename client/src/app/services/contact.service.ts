@@ -34,6 +34,6 @@ export class ContactService {
   }
 
   updateContact(id: number, contact: Contact): Observable<Contact> {
-    return this.http.put<Contact>(`${this.baseUrl}/{id}`, JSON.stringify(contact), { ...this.httpOptions });
+    return this.http.put<Contact>(`${this.baseUrl}/${id}`, JSON.stringify(contact), { ...this.httpOptions });
   }
 }
