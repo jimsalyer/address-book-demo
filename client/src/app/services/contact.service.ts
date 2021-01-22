@@ -1,8 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Contact } from '../models/contact';
-import { retry, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -19,52 +18,22 @@ export class ContactService {
   constructor(private http: HttpClient) { }
 
   addContact(contact: Contact): Observable<Contact> {
-    return this.http.post<Contact>(this.baseUrl, JSON.stringify(contact))
-      .pipe(
-        retry(1),
-        catchError(this.handleError)
-      );
+    return this.http.post<Contact>(this.baseUrl, JSON.stringify(contact), { ...this.httpOptions });
   }
 
   deleteContact(id: number): Observable<Contact> {
-    return this.http.delete<Contact>(`${this.baseUrl}/${id}`)
-      .pipe(
-        retry(1),
-        catchError(this.handleError)
-      );
+    return this.http.delete<Contact>(`${this.baseUrl}/${id}`);
   }
 
   getContact(id: number): Observable<Contact> {
-    return this.http.get<Contact>(`${this.baseUrl}/${id}`)
-      .pipe(
-        retry(1),
-        catchError(this.handleError)
-      );
+    return this.http.get<Contact>(`${this.baseUrl}/${id}`);
   }
 
   listContacts(): Observable<Contact[]> {
-    return this.http.get<Contact[]>(this.baseUrl)
-      .pipe(
-        retry(1),
-        catchError(this.handleError)
-      );
+    return this.http.get<Contact[]>(this.baseUrl);
   }
 
   updateContact(id: number, contact: Contact): Observable<Contact> {
-    return this.http.put<Contact>(`${this.baseUrl}/{id}`, JSON.stringify(contact))
-      .pipe(
-        retry(1),
-        catchError(this.handleError)
-      );
-  }
-
-  private handleError(error: any): Observable<never> {
-    let errorMessage = '';
-    if (error instanceof ErrorEvent) {
-      errorMessage = error.error.message;
-    } else {
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    return throwError(errorMessage);
+    return this.http.put<Contact>(`${this.baseUrl}/{id}`, JSON.stringify(contact), { ...this.httpOptions });
   }
 }

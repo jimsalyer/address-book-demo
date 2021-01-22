@@ -1,26 +1,22 @@
 <h2>Contacts</h2>
 
 <p>
-  <a href="#">Add New Contact</a>
+  <a [routerLink]="['/contacts/add']" class="btn btn-success">Add New</a>
 </p>
 
 <div *ngIf="contacts.length === 0" class="alert alert-warning">No contacts have been added.</div>
 
 <ng-container *ngIf="contacts.length > 0">
-  <table class="table table-bordered table-striped table-hover table-responsive">
-    <thead>
-      <tr>
-        <th>Last Name</th>
-        <th>First Name</th>
-        <th>Display Name</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let contact of contacts">
-        <td>{{contact.lastName}}</td>
-        <td>{{contact.firstName}}</td>
-        <td>{{contact.displayName}}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="card-deck">
+    <div *ngFor="let contact of contacts" class="card">
+      <div class="card-body">
+        <h4 class="card-title">{{contact.displayName}}</h4>
+        <p class="card-text">{{contact.lastName}}, {{contact.firstName}} {{contact.middleName}}</p>
+      </div>
+      <div class="card-footer">
+        <a href="#" class="btn btn-info mr-2">Edit</a>
+        <a href="#" class="btn btn-danger">Delete</a>
+      </div>
+    </div>
+  </div>
 </ng-container>

@@ -25,8 +25,9 @@ namespace AddressBook.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AddressBookDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("AddressBookConnectionString")));
+            services.AddDbContext<AddressBookDbContext>(
+                options => options.UseNpgsql(Configuration.GetConnectionString("AddressBookConnectionString"))
+            );
 
             services.AddAutoMapper(typeof(Startup));
 
@@ -37,9 +38,19 @@ namespace AddressBook.Api
 
             services.AddControllers();
 
-            services.AddSwaggerGen(c =>
+            services.AddCors(
+                options => options.AddPolicy(
+                    "corsPolicy",
+                    builder => builder
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowAnyOrigin()
+                )
+            );
+
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Address Book API", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Address Book API", Version = "v1" });
             });
         }
 
@@ -56,6 +67,8 @@ namespace AddressBook.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("corsPolicy");
 
             app.UseAuthorization();
 
