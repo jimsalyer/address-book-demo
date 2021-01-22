@@ -1,5 +1,4 @@
 using AutoMapper;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AddressBook.Api.Models
@@ -9,7 +8,5 @@ namespace AddressBook.Api.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ContactId { get; set; }
-
-        public ICollection<Tag> Tags { get; set; }
     }
 }
