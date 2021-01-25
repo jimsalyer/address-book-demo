@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NGXLogger } from 'ngx-logger';
 import { Contact } from './../../models/contact';
 import { ContactService } from './../../services/contact.service';
 
@@ -19,6 +20,7 @@ export class ContactEditComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private logger: NGXLogger,
     private modalService: NgbModal,
     private route: ActivatedRoute,
     private router: Router,
@@ -48,7 +50,10 @@ export class ContactEditComponent implements OnInit {
           this.contact = contact;
           this.form.setValue(contact);
         },
-        () => this.router.navigate(['/contacts'])
+        (error) => {
+          this.logger.error('Error getting contact', this.id, error);
+          this.router.navigate(['/contacts']);
+        }
       );
     }
   }
@@ -57,7 +62,8 @@ export class ContactEditComponent implements OnInit {
     this.modalService.open(this.modalContent).result.then(
       () => {
         this.contactService.deleteContact(this.id).subscribe(
-          () => this.router.navigate(['/contacts'])
+          () => this.router.navigate(['/contacts']),
+          (error) => this.logger.error('Error deleting contact', this.id, error)
         );
       },
       () => {}
@@ -71,11 +77,13 @@ export class ContactEditComponent implements OnInit {
   onSubmit(): void {
     if (this.id > 0) {
       this.contactService.updateContact(this.id, this.form.value).subscribe(
-        () => this.router.navigate(['/contacts'])
+        () => this.router.navigate(['/contacts']),
+        (error) => this.logger.error('Error updating contact', this.id, error)
       );
     } else {
       this.contactService.addContact(this.form.value).subscribe(
-        () => this.router.navigate(['/contacts'])
+        () => this.router.navigate(['/contacts']),
+        (error) => this.logger.error('Error adding contact', this.id, error)
       );
     }
   }

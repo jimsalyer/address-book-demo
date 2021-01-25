@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
 import { Contact } from '../../models/contact';
 import { ContactService } from '../../services/contact.service';
@@ -13,6 +14,7 @@ export class ContactListComponent implements OnInit, OnDestroy {
   contacts: Contact[] = [];
 
   constructor(
+    private logger: NGXLogger,
     private contactService: ContactService
   ) { }
 
@@ -26,9 +28,8 @@ export class ContactListComponent implements OnInit, OnDestroy {
 
   listContacts(): Subscription {
     return this.contactService.listContacts().subscribe(
-      (contacts) => {
-        this.contacts = contacts;
-      }
+      (contacts) => this.contacts = contacts,
+      (error) => this.logger.error('Error listing contacts', error)
     );
   }
 }
