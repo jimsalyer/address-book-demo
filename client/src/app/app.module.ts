@@ -1,16 +1,14 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ContactEditComponent } from './components/contact-edit/contact-edit.component';
 import { ContactListComponent } from './components/contact-list/contact-list.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
-import { ContactAddComponent } from './components/contact-add/contact-add.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ContactFormComponent } from './components/contact-form/contact-form.component';
-import { ContactUpdateComponent } from './components/contact-update/contact-update.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -18,9 +16,7 @@ import { ContactUpdateComponent } from './components/contact-update/contact-upda
     ContactListComponent,
     NavbarComponent,
     HomeComponent,
-    ContactAddComponent,
-    ContactFormComponent,
-    ContactUpdateComponent
+    ContactEditComponent
   ],
   imports: [
     AppRoutingModule,

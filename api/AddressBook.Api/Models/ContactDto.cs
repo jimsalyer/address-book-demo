@@ -52,7 +52,7 @@ namespace AddressBook.Api.Models
         [Sieve(CanFilter = true, CanSort = true)]
         public string PhoneNumber { get; set; }
 
-        [EmailAddress]
+        // [EmailAddress]
         [MaxLength(255)]
         [Sieve(CanFilter = true, CanSort = true)]
         public string EmailAddress { get; set; }
