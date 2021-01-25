@@ -4,7 +4,11 @@
   <a routerLink="/contacts" class="btn btn-secondary">Back to Contact List</a>
 </p>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<ngb-alert *ngIf="alert" [type]="alert.type" [dismissible]="alert.dismissible" (closed)="onAlertClose()">
+  {{alert.message}}
+</ngb-alert>
+
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()">
   <input id="contactId" formControlName="contactId" type="hidden">
 
   <div class="form-group">
@@ -63,7 +67,7 @@
   </div>
 
   <button type="submit" class="btn btn-primary mr-2">Submit</button>
-  <button type="button" class="btn btn-secondary mr-2" (click)="onReset()">Reset</button>
+  <button type="button" class="btn btn-secondary mr-2" (click)="onFormReset()">Reset</button>
   <button *ngIf="this.id > 0" type="button" class="btn btn-danger" (click)="onDelete()">Delete</button>
 </form>
 

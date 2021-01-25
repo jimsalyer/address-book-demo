@@ -4,6 +4,10 @@
   <a [routerLink]="['/contacts/new']" class="btn btn-success">Add New</a>
 </p>
 
+<ngb-alert *ngIf="alert" [type]="alert.type" [dismissible]="alert.dismissible" (closed)="onAlertClose()">
+  {{alert.message}}
+</ngb-alert>
+
 <div *ngIf="contacts.length === 0" class="alert alert-warning">No contacts have been added.</div>
 
 <div *ngIf="contacts.length > 0" class="row row-cols-md-2 row-cols-lg-3">

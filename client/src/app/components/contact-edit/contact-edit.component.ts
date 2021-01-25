@@ -1,10 +1,13 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NGXLogger } from 'ngx-logger';
-import { Contact } from './../../models/contact';
-import { ContactService } from './../../services/contact.service';
+import { Contact } from '../../models/contact';
+import { ContactService } from '../../services/contact.service';
+import { Alert } from '../../shared/alert';
+import { AlertType } from '../../shared/alert-type';
 
 @Component({
   selector: 'app-contact-edit',
@@ -14,6 +17,7 @@ import { ContactService } from './../../services/contact.service';
 export class ContactEditComponent implements OnInit {
   @ViewChild('modalContent') modalContent?: any;
 
+  alert?: Alert;
   contact?: Contact;
   form: FormGroup;
   id = 0;
@@ -50,9 +54,11 @@ export class ContactEditComponent implements OnInit {
           this.contact = contact;
           this.form.setValue(contact);
         },
-        (error) => {
-          this.logger.error('Error getting contact', this.id, error);
-          this.router.navigate(['/contacts']);
+        (error: HttpErrorResponse) => {
+          this.logger.error('ContactService.getContact', this.id, error.error);
+          this.router.navigateByUrl('/contacts', {
+            state: new Alert('Could not get contact.', AlertType.DANGER)
+          });
         }
       );
     }
@@ -62,29 +68,62 @@ export class ContactEditComponent implements OnInit {
     this.modalService.open(this.modalContent).result.then(
       () => {
         this.contactService.deleteContact(this.id).subscribe(
-          () => this.router.navigate(['/contacts']),
-          (error) => this.logger.error('Error deleting contact', this.id, error)
+          () => this.router.navigateByUrl('/contacts', {
+            state: new Alert('The contact has been deleted.', AlertType.SUCCESS)
+          }),
+          (error: HttpErrorResponse) => this.handleError(
+            'ContactService.deleteContact',
+            'Could not delete contact.',
+            this.id,
+            error.error
+          )
         );
       },
       () => {}
     );
   }
 
-  onReset(): void {
+  onAlertClose(): void {
+    this.alert = undefined;
+  }
+
+  onFormReset(): void {
+    this.alert = undefined;
     this.form.reset(this.contact);
   }
 
-  onSubmit(): void {
+  onFormSubmit(): void {
+    const formValue = this.form.value;
     if (this.id > 0) {
-      this.contactService.updateContact(this.id, this.form.value).subscribe(
-        () => this.router.navigate(['/contacts']),
-        (error) => this.logger.error('Error updating contact', this.id, error)
+      this.contactService.updateContact(this.id, formValue).subscribe(
+        () => this.router.navigateByUrl('/contacts', {
+          state: new Alert('The contact has been updated.', AlertType.SUCCESS)
+        }),
+        (error: HttpErrorResponse) => this.handleError(
+          'ContactService.updateContact',
+          'Could not updated contact.',
+          this.id,
+          formValue,
+          error.error
+        )
       );
     } else {
-      this.contactService.addContact(this.form.value).subscribe(
-        () => this.router.navigate(['/contacts']),
-        (error) => this.logger.error('Error adding contact', this.id, error)
+      this.contactService.addContact(formValue).subscribe(
+        () => this.router.navigateByUrl('/contacts', {
+          state: new Alert('The contact has been added.', AlertType.SUCCESS)
+        }),
+        (error: HttpErrorResponse) => this.handleError(
+          'ContactService.addContact',
+          'Could not add contact.',
+          formValue,
+          error.error
+        )
       );
     }
+  }
+
+  private handleError(logMessage: string, displayMessage: string, ...data: any[]): void {
+    this.logger.error(logMessage, data);
+    this.alert = new Alert(displayMessage, AlertType.DANGER);
   }
 }
