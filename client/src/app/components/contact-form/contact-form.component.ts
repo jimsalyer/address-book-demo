@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Contact } from './../../models/contact';
 
@@ -11,6 +11,7 @@ export class ContactFormComponent implements OnInit {
   @Output() submitted = new EventEmitter<Contact>();
 
   form = new FormGroup({
+    contactId: new FormControl(0),
     firstName: new FormControl(),
     middleName: new FormControl(),
     lastName: new FormControl(),
@@ -34,18 +35,6 @@ export class ContactFormComponent implements OnInit {
   }
 
   updateForm(contact: Contact): void {
-    this.form.setValue({
-      firstName: contact.firstName,
-      middleName: contact.middleName,
-      lastName: contact.lastName,
-      displayName: contact.displayName,
-      streetAddress: contact.streetAddress,
-      city: contact.city,
-      region: contact.region,
-      postalCode: contact.postalCode,
-      country: contact.country,
-      phoneNumber: contact.phoneNumber,
-      emailAddress: contact.emailAddress
-    });
+    this.form.setValue(contact);
   }
 }
