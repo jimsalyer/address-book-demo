@@ -1,7 +1,7 @@
 <h2>{{id > 0 ? 'Update' : 'Add New'}} Contact</h2>
 
 <p>
-  <a routerLink="/contacts">Back to Contact List</a>
+  <a routerLink="/contacts" class="btn btn-secondary">Back to Contact List</a>
 </p>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -63,5 +63,19 @@
   </div>
 
   <button type="submit" class="btn btn-primary mr-2">Submit</button>
-  <button type="button" class="btn btn-secondary" (click)="onReset()">Reset</button>
+  <button type="button" class="btn btn-secondary mr-2" (click)="onReset()">Reset</button>
+  <button *ngIf="this.id > 0" type="button" class="btn btn-danger" (click)="onDelete()">Delete</button>
 </form>
+
+<ng-template #modalContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Delete Contact</h4>
+  </div>
+  <div class="modal-body">
+    <p class="lead">Are you sure you want to delete {{contact.displayName}}?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close()">Yes</button>
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">No</button>
+  </div>
+</ng-template>

@@ -6,9 +6,9 @@
 
 <div *ngIf="contacts.length === 0" class="alert alert-warning">No contacts have been added.</div>
 
-<ng-container *ngIf="contacts.length > 0">
-  <div class="card-deck">
-    <div *ngFor="let contact of contacts" class="card">
+<div *ngIf="contacts.length > 0" class="row row-cols-md-2 row-cols-lg-3">
+  <div *ngFor="let contact of contacts" class="col mb-4">
+    <div class="card">
       <div class="card-body">
         <h4 class="card-title">{{contact.displayName}}</h4>
         <p class="card-text">{{contact.lastName}}, {{contact.firstName}} {{contact.middleName}}</p>
@@ -18,4 +18,4 @@
       </div>
     </div>
   </div>
-</ng-container>
+</div>
