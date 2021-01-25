@@ -9,7 +9,7 @@ import { ContactService } from '../../services/contact.service';
   styleUrls: ['./contact-list.component.scss']
 })
 export class ContactListComponent implements OnInit, OnDestroy {
-  listContactsSubscription: Subscription = Subscription.EMPTY;
+  listContactsSubscription?: Subscription;
   contacts: Contact[] = [];
 
   constructor(
@@ -21,7 +21,7 @@ export class ContactListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.listContactsSubscription.unsubscribe();
+    this.listContactsSubscription?.unsubscribe();
   }
 
   listContacts(): Subscription {

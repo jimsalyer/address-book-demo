@@ -13,7 +13,7 @@ import { ContactService } from './../../services/contact.service';
 export class ContactEditComponent implements OnInit {
   @ViewChild('modalContent') modalContent?: any;
 
-  contact = new Contact();
+  contact?: Contact;
   form: FormGroup;
   id = 0;
 
