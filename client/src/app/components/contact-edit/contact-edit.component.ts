@@ -44,8 +44,7 @@ export class ContactEditComponent implements OnInit {
       city: ['', [Validators.required, Validators.maxLength(255)]],
       state: ['', [Validators.required, Validators.maxLength(2)]],
       zip: ['', [Validators.required, Validators.maxLength(10)]],
-      country: ['', [Validators.required, Validators.maxLength(255)]],
-      phoneNumber: ['', Validators.required, Validators.maxLength(255)],
+      phoneNumber: ['', [Validators.required, Validators.maxLength(255)]],
       emailAddress: ['', [Validators.required, Validators.email, Validators.maxLength(255)]]
     });
   }
