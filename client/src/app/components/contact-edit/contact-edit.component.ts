@@ -1,8 +1,6 @@
-import { RegionService } from './../../services/region.service';
-import { Region } from './../../models/region';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NGXLogger } from 'ngx-logger';
@@ -10,6 +8,8 @@ import { Contact } from '../../models/contact';
 import { ContactService } from '../../services/contact.service';
 import { Alert } from '../../shared/alert';
 import { AlertType } from '../../shared/alert-type';
+import { Region } from './../../models/region';
+import { RegionService } from './../../services/region.service';
 
 @Component({
   selector: 'app-contact-edit',
@@ -20,147 +20,93 @@ export class ContactEditComponent implements OnInit {
   @ViewChild('deleteModalContent') deleteModalContent?: any;
 
   alert?: Alert;
-  contact?: Contact;
-  form: FormGroup;
-  id = 0;
+  model = new Contact();
   regions: Region[] = [];
 
   constructor(
-    private formBuilder: FormBuilder,
     private logger: NGXLogger,
     private modalService: NgbModal,
     private route: ActivatedRoute,
     private router: Router,
     private contactService: ContactService,
     private regionService: RegionService
-  ) {
-    this.form = this.formBuilder.group({
-      contactId: [0, [Validators.required, Validators.pattern(/^\d+$/)]],
-      firstName: ['', [Validators.required, Validators.maxLength(255)]],
-      middleName: ['', Validators.maxLength(255)],
-      lastName: ['', [Validators.required, Validators.maxLength(255)]],
-      displayName: ['', [Validators.required, Validators.maxLength(255)]],
-      streetAddress: ['', [Validators.required, Validators.maxLength(255)]],
-      city: ['', [Validators.required, Validators.maxLength(255)]],
-      state: ['', [Validators.required, Validators.maxLength(2)]],
-      zip: ['', [Validators.required, Validators.maxLength(10)]],
-      phoneNumber: ['', [Validators.required, Validators.maxLength(255)]],
-      emailAddress: ['', [Validators.required, Validators.email, Validators.maxLength(255)]]
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.regions = this.regionService.getRegions();
 
-    this.id = +(this.route.snapshot.params.id ?? 0);
-    if (this.id > 0) {
-      this.contactService.getContact(this.id).subscribe(
+    const id = +(this.route.snapshot.params.id ?? 0);
+    if (id > 0) {
+      this.contactService.getContact(id).subscribe(
         (contact: Contact) => {
-          this.contact = contact;
-          this.form?.setValue(contact);
+          this.model = contact;
         },
         (error: HttpErrorResponse) => {
-          this.logger.error('ContactService.getContact', this.id, error.error);
+          this.logger.error('ContactService.getContact', id, error.error);
           this.router.navigateByUrl('/contacts', {
-            state: new Alert('Could not get contact.', AlertType.DANGER)
+            state: new Alert(`A contact with ID ${id} could not be found.`, AlertType.DANGER)
           });
         }
       );
     }
   }
 
-  get firstName(): AbstractControl {
-    return this.form.controls.firstName;
-  }
-
-  get middleName(): AbstractControl {
-    return this.form.controls.middleName;
-  }
-
-  get lastName(): AbstractControl {
-    return this.form.controls.lastName;
-  }
-
-  get displayName(): AbstractControl {
-    return this.form.controls.displayName;
-  }
-
-  get streetAddress(): AbstractControl {
-    return this.form.controls.streetAddress;
-  }
-
-  get city(): AbstractControl {
-    return this.form.controls.city;
-  }
-
-  get state(): AbstractControl {
-    return this.form.controls.state;
-  }
-
-  get zip(): AbstractControl {
-    return this.form.controls.zip;
-  }
-
-  get phoneNumber(): AbstractControl {
-    return this.form.controls.phoneNumber;
-  }
-
-  get emailAddress(): AbstractControl {
-    return this.form.controls.emailAddress;
-  }
-
   onDelete(): void {
-    this.modalService.open(this.deleteModalContent).result.then(
-      () => {
-        this.contactService.deleteContact(this.id).subscribe(
-          () => this.router.navigateByUrl('/contacts', {
-            state: new Alert('The contact has been deleted.', AlertType.SUCCESS)
-          }),
-          (error: HttpErrorResponse) => this.handleError(
-            'ContactService.deleteContact',
-            'Could not delete contact.',
-            this.id,
-            error.error
-          )
-        );
-      },
-      () => {}
-    );
+    if (this.model.contactId > 0) {
+      this.modalService.open(this.deleteModalContent).result.then(
+        () => {
+          this.contactService.deleteContact(this.model.contactId).subscribe(
+            () => this.router.navigateByUrl('/contacts', {
+              state: new Alert(`${this.model.displayName} has been deleted.`, AlertType.SUCCESS)
+            }),
+            (error: HttpErrorResponse) => this.handleError(
+              'ContactService.deleteContact',
+              'Could not delete contact.',
+              this.model.contactId,
+              error.error
+            )
+          );
+        },
+        () => {}
+      );
+    } else {
+      this.handleError(
+        'ContactEditComponent.onDelete',
+        'There is no existing contact to delete.'
+      );
+    }
   }
 
-  onAlertClose(): void {
+  onClose(): void {
     this.alert = undefined;
   }
 
-  onFormReset(): void {
-    this.alert = undefined;
-    this.form.reset(this.contact);
+  onReset(contactForm: NgForm): void {
+    contactForm.resetForm();
   }
 
-  onFormSubmit(): void {
-    const formValue = this.form.value;
-    if (this.id > 0) {
-      this.contactService.updateContact(this.id, formValue).subscribe(
+  onSubmit(): void {
+    if (this.model.contactId > 0) {
+      this.contactService.updateContact(this.model.contactId, this.model).subscribe(
         () => this.router.navigateByUrl('/contacts', {
-          state: new Alert('The contact has been updated.', AlertType.SUCCESS)
+          state: new Alert(`${this.model.displayName} has been updated.`, AlertType.SUCCESS)
         }),
         (error: HttpErrorResponse) => this.handleError(
           'ContactService.updateContact',
-          'Could not updated contact.',
-          this.id,
-          formValue,
+          'Could not update contact.',
+          this.model,
           error.error
         )
       );
     } else {
-      this.contactService.addContact(formValue).subscribe(
+      this.contactService.addContact(this.model).subscribe(
         () => this.router.navigateByUrl('/contacts', {
-          state: new Alert('The contact has been added.', AlertType.SUCCESS)
+          state: new Alert(`${this.model.displayName} has been added.`, AlertType.SUCCESS)
         }),
         (error: HttpErrorResponse) => this.handleError(
           'ContactService.addContact',
           'Could not add contact.',
-          formValue,
+          this.model,
           error.error
         )
       );
