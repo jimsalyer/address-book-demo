@@ -1,6 +1,8 @@
+import { RegionService } from './../../services/region.service';
+import { Region } from './../../models/region';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NGXLogger } from 'ngx-logger';
@@ -15,12 +17,13 @@ import { AlertType } from '../../shared/alert-type';
   styleUrls: ['./contact-edit.component.scss']
 })
 export class ContactEditComponent implements OnInit {
-  @ViewChild('modalContent') modalContent?: any;
+  @ViewChild('deleteModalContent') deleteModalContent?: any;
 
   alert?: Alert;
   contact?: Contact;
   form: FormGroup;
   id = 0;
+  regions: Region[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,7 +31,8 @@ export class ContactEditComponent implements OnInit {
     private modalService: NgbModal,
     private route: ActivatedRoute,
     private router: Router,
-    private contactService: ContactService
+    private contactService: ContactService,
+    private regionService: RegionService
   ) {
     this.form = this.formBuilder.group({
       contactId: [0, [Validators.required, Validators.pattern(/^\d+$/)]],
@@ -38,21 +42,23 @@ export class ContactEditComponent implements OnInit {
       displayName: ['', [Validators.required, Validators.maxLength(255)]],
       streetAddress: ['', [Validators.required, Validators.maxLength(255)]],
       city: ['', [Validators.required, Validators.maxLength(255)]],
-      region: ['', [Validators.required, Validators.maxLength(255)]],
-      postalCode: ['', [Validators.required, Validators.maxLength(255)]],
+      state: ['', [Validators.required, Validators.maxLength(2)]],
+      zip: ['', [Validators.required, Validators.maxLength(10)]],
       country: ['', [Validators.required, Validators.maxLength(255)]],
-      phoneNumber: ['', Validators.maxLength(255)],
-      emailAddress: ['', [Validators.email, Validators.maxLength(255)]]
+      phoneNumber: ['', Validators.required, Validators.maxLength(255)],
+      emailAddress: ['', [Validators.required, Validators.email, Validators.maxLength(255)]]
     });
   }
 
   ngOnInit(): void {
+    this.regions = this.regionService.getRegions();
+
     this.id = +(this.route.snapshot.params.id ?? 0);
     if (this.id > 0) {
       this.contactService.getContact(this.id).subscribe(
         (contact: Contact) => {
           this.contact = contact;
-          this.form.setValue(contact);
+          this.form?.setValue(contact);
         },
         (error: HttpErrorResponse) => {
           this.logger.error('ContactService.getContact', this.id, error.error);
@@ -64,8 +70,48 @@ export class ContactEditComponent implements OnInit {
     }
   }
 
+  get firstName(): AbstractControl {
+    return this.form.controls.firstName;
+  }
+
+  get middleName(): AbstractControl {
+    return this.form.controls.middleName;
+  }
+
+  get lastName(): AbstractControl {
+    return this.form.controls.lastName;
+  }
+
+  get displayName(): AbstractControl {
+    return this.form.controls.displayName;
+  }
+
+  get streetAddress(): AbstractControl {
+    return this.form.controls.streetAddress;
+  }
+
+  get city(): AbstractControl {
+    return this.form.controls.city;
+  }
+
+  get state(): AbstractControl {
+    return this.form.controls.state;
+  }
+
+  get zip(): AbstractControl {
+    return this.form.controls.zip;
+  }
+
+  get phoneNumber(): AbstractControl {
+    return this.form.controls.phoneNumber;
+  }
+
+  get emailAddress(): AbstractControl {
+    return this.form.controls.emailAddress;
+  }
+
   onDelete(): void {
-    this.modalService.open(this.modalContent).result.then(
+    this.modalService.open(this.deleteModalContent).result.then(
       () => {
         this.contactService.deleteContact(this.id).subscribe(
           () => this.router.navigateByUrl('/contacts', {

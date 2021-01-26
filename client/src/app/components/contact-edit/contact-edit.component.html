@@ -9,69 +9,115 @@
 </ngb-alert>
 
 <form [formGroup]="form" (ngSubmit)="onFormSubmit()">
-  <input id="contactId" formControlName="contactId" type="hidden">
+  <input id="contactId" formControlName="contactId" type="hidden" readonly>
 
   <div class="form-group">
     <label for="firstName">First Name</label>
-    <input id="firstName" formControlName="firstName" type="text" class="form-control">
+    <input id="firstName" formControlName="firstName" type="text" class="form-control"
+      [class.is-invalid]="firstName.touched && firstName.invalid">
+    <div *ngIf="firstName.touched && firstName.invalid" class="invalid-feedback">
+      <span *ngIf="firstName.errors?.required">Required</span>
+      <span *ngIf="firstName.errors?.maxLength">Maximum length is 255.</span>
+    </div>
   </div>
 
   <div class="form-group">
     <label for="middleName">Middle Name</label>
-    <input id="middleName" formControlName="middleName" type="text" class="form-control">
+    <input id="middleName" formControlName="middleName" type="text" class="form-control"
+      [class.is-invalid]="middleName.touched && middleName.invalid">
+    <div *ngIf="middleName.touched && middleName.invalid" class="invalid-feedback">
+      <span *ngIf="middleName.errors?.maxLength">Maximum length is 255.</span>
+    </div>
   </div>
 
   <div class="form-group">
     <label for="lastName">Last Name</label>
-    <input id="lastName" type="text" formControlName="lastName" class="form-control">
+    <input id="lastName" type="text" formControlName="lastName" class="form-control"
+      [class.is-invalid]="lastName.touched && lastName.invalid">
+    <div *ngIf="lastName.touched && lastName.invalid" class="invalid-feedback">
+      <span *ngIf="lastName.errors?.required">Required</span>
+      <span *ngIf="lastName.errors?.maxLength">Maximum length is 255.</span>
+    </div>
   </div>
 
   <div class="form-group">
     <label for="displayName">Display Name</label>
-    <input id="displayName" type="text" formControlName="displayName" class="form-control">
+    <input id="displayName" type="text" formControlName="displayName" class="form-control"
+      [class.is-invalid]="displayName.touched && displayName.invalid">
+    <div *ngIf="displayName.touched && displayName.invalid" class="invalid-feedback">
+      <span *ngIf="displayName.errors?.required">Required</span>
+      <span *ngIf="displayName.errors?.maxLength">Maximum length is 255.</span>
+    </div>
   </div>
 
   <div class="form-group">
     <label for="streetAddress">Street Address</label>
-    <textarea id="streetAddress" formControlName="streetAddress" rows="2" class="form-control"></textarea>
+    <textarea id="streetAddress" formControlName="streetAddress" rows="2" class="form-control"
+      [class.is-invalid]="streetAddress.touched && streetAddress.invalid"></textarea>
+    <div *ngIf="streetAddress.touched && streetAddress.invalid" class="invalid-feedback">
+      <span *ngIf="streetAddress.errors?.required">Required</span>
+      <span *ngIf="streetAddress.errors?.maxLength">Maximum length is 255.</span>
+    </div>
   </div>
 
   <div class="form-group">
     <label for="city">City</label>
-    <input id="city" type="text" formControlName="city" class="form-control">
+    <input id="city" type="text" formControlName="city" class="form-control"
+      [class.is-invalid]="city.touched && city.invalid">
+    <div *ngIf="city.touched && city.invalid" class="invalid-feedback">
+      <span *ngIf="city.errors?.required">Required</span>
+      <span *ngIf="city.errors?.maxLength">Maximum length is 255.</span>
+    </div>
   </div>
 
   <div class="form-group">
-    <label for="region">Region</label>
-    <input id="region" type="text" formControlName="region" class="form-control">
+    <label for="state">State</label>
+    <select id="state" formControlName="state" class="form-control" [class.is-invalid]="state.touched && state.invalid">
+      <option *ngFor="let region of regions" [value]="region.abbreviation">{{region.name}}</option>
+    </select>
+    <div *ngIf="state.touched && state.invalid" class="invalid-feedback">
+      <span *ngIf="state.errors?.required">Required</span>
+      <span *ngIf="state.errors?.maxLength">Maximum length is 2.</span>
+    </div>
   </div>
 
   <div class="form-group">
-    <label for="postalCode">Postal Code</label>
-    <input id="postalCode" type="text" formControlName="postalCode" class="form-control">
-  </div>
-
-  <div class="form-group">
-    <label for="country">Country</label>
-    <input id="country" type="text" formControlName="country" class="form-control">
+    <label for="zip">Zip Code</label>
+    <input id="zip" type="text" formControlName="zip" class="form-control"
+      [class.is-invalid]="zip.touched && zip.invalid">
+    <div *ngIf="zip.touched && zip.invalid" class="invalid-feedback">
+      <span *ngIf="zip.errors?.required">Required</span>
+      <span *ngIf="zip.errors?.maxLength">Maximum length is 10.</span>
+    </div>
   </div>
 
   <div class="form-group">
     <label for="phoneNumber">Phone Number</label>
-    <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control">
+    <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control"
+      [class.is-invalid]="phoneNumber.touched && phoneNumber.invalid">
+    <div *ngIf="phoneNumber.touched && phoneNumber.invalid" class="invalid-feedback">
+      <span *ngIf="phoneNumber.errors?.required">Required</span>
+      <span *ngIf="phoneNumber.errors?.maxLength">Maximum length is 255.</span>
+    </div>
   </div>
 
   <div class="form-group">
     <label for="emailAddress">Email Address</label>
-    <input id="emailAddress" type="text" formControlName="emailAddress" class="form-control">
+    <input id="emailAddress" type="text" formControlName="emailAddress" class="form-control"
+      [class.is-invalid]="emailAddress.touched && emailAddress.invalid">
+    <div *ngIf="emailAddress.touched && emailAddress.invalid" class="invalid-feedback">
+      <span *ngIf="emailAddress.errors?.required">Required</span>
+      <span *ngIf="emailAddress.errors?.email">Must be a valid email address.</span>
+      <span *ngIf="emailAddress.errors?.maxLength">Maximum length is 255.</span>
+    </div>
   </div>
 
-  <button type="submit" class="btn btn-primary mr-2">Submit</button>
-  <button type="button" class="btn btn-secondary mr-2" (click)="onFormReset()">Reset</button>
+  <button type="submit" [disabled]="form.invalid" class="btn btn-primary mr-2">Submit</button>
+  <button type="button" [disabled]="!form.dirty" class="btn btn-secondary mr-2" (click)="onFormReset()">Reset</button>
   <button *ngIf="this.id > 0" type="button" class="btn btn-danger" (click)="onDelete()">Delete</button>
 </form>
 
-<ng-template #modalContent let-modal>
+<ng-template #deleteModalContent let-modal>
   <div class="modal-header">
     <h4 class="modal-title">Delete Contact</h4>
   </div>

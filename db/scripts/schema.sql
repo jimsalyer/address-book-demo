@@ -8,9 +8,8 @@ CREATE TABLE contacts (
   display_name character varying(255) NOT NULL,
   street_address text NOT NULL,
   city character varying(255) NOT NULL,
-  region character varying(255) NOT NULL,
-  postal_code character varying(255) NOT NULL,
-  country character varying(255) NOT NULL,
-  phone_number character varying(255),
-  email_address character varying(255)
+  state character varying(2) NOT NULL CHECK (state IN ('AL','AK','AS','AZ','AR','CA','CO','CT','DE','DC','FM','FL','GA','GU','HI','ID','IL','IN','IA','KS','KY','LA','ME','MH','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','MP','OH','OK','OR','PW','PA','PR','RI','SC','SD','TN','TX','UT','VT','VI','VA','WA','WV','WI','WY')),
+  zip character varying(10) NOT NULL,
+  phone_number character varying(255) NOT NULL,
+  email_address character varying(255) NOT NULL
 );

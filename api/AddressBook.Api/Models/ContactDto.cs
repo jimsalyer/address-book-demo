@@ -33,27 +33,24 @@ namespace AddressBook.Api.Models
         [Sieve(CanFilter = true, CanSort = true)]
         public string City { get; set; }
 
-        [MaxLength(255)]
+        [MaxLength(2)]
         [Required]
         [Sieve(CanFilter = true, CanSort = true)]
-        public string Region { get; set; }
+        public string State { get; set; }
+
+        [MaxLength(10)]
+        [Required]
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string Zip { get; set; }
 
         [MaxLength(255)]
         [Required]
-        [Sieve(CanFilter = true, CanSort = true)]
-        public string PostalCode { get; set; }
-
-        [MaxLength(255)]
-        [Required]
-        [Sieve(CanFilter = true, CanSort = true)]
-        public string Country { get; set; }
-
-        [MaxLength(255)]
         [Sieve(CanFilter = true, CanSort = true)]
         public string PhoneNumber { get; set; }
 
-        // [EmailAddress]
+        [EmailAddress]
         [MaxLength(255)]
+        [Required]
         [Sieve(CanFilter = true, CanSort = true)]
         public string EmailAddress { get; set; }
 

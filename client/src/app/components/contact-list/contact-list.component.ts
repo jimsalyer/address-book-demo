@@ -24,8 +24,8 @@ export class ContactListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const state = window.history.state;
-    if (state instanceof Alert) {
-      this.alert = state;
+    if (state && state.message) {
+      this.alert = new Alert(state.message, state.type ?? AlertType.INFO, state.dismissible ?? false);
     }
     this.listContactsSubscription = this.listContacts();
   }
