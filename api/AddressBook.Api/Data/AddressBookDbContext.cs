@@ -1,7 +1,7 @@
 using AddressBook.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AddressBook.Api.DataAccess
+namespace AddressBook.Api.Data
 {
     public class AddressBookDbContext : DbContext
     {

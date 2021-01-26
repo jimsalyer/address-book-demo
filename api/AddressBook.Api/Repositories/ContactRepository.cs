@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using AddressBook.Api.DataAccess;
+using AddressBook.Api.Data;
 using AddressBook.Api.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;

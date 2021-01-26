@@ -1,5 +1,5 @@
 using AutoMapper;
-using AddressBook.Api.DataAccess;
+using AddressBook.Api.Data;
 using AddressBook.Api.Repositories;
 using AddressBook.Api.Services;
 using Microsoft.AspNetCore.Builder;
