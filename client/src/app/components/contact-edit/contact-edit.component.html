@@ -4,11 +4,11 @@
   <a routerLink="/contacts" class="btn btn-secondary">Back to Contact List</a>
 </p>
 
-<ngb-alert *ngIf="alert" [type]="alert.type" [dismissible]="alert.dismissible" (closed)="onClose()">
+<ngb-alert *ngIf="alert" [type]="alert.type" [dismissible]="alert.dismissible" (closed)="onAlertClose()">
   {{alert.message}}
 </ngb-alert>
 
-<form #contactForm="ngForm" (ngSubmit)="contactForm.form.valid && onSubmit()">
+<form #contactForm="ngForm" (ngSubmit)="contactForm.form.valid && onFormSubmit()">
   <input #contactId="ngModel" [(ngModel)]="model.contactId" name="contactId" type="hidden" readonly>
   <div class="form-row">
     <div class="col-lg-4 mb-3">
@@ -99,8 +99,8 @@
     </div>
   </div>
   <button type="submit" [disabled]="contactForm.form.invalid" class="btn btn-primary mr-2">Submit</button>
-  <button type="button" [disabled]="!contactForm.form.dirty" class="btn btn-secondary mr-2"
-    (click)="onReset(contactForm)">Reset</button>
+  <button type="button" [disabled]="!contactForm.dirty" class="btn btn-secondary mr-2"
+    (click)="resetForm()">Reset</button>
   <button *ngIf="model.contactId > 0" type="button" class="btn btn-danger" (click)="onDelete()">Delete</button>
 </form>
 

@@ -1,6 +1,6 @@
+import { NgForm } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NGXLogger } from 'ngx-logger';
@@ -17,6 +17,7 @@ import { RegionService } from './../../services/region.service';
   styleUrls: ['./contact-edit.component.scss']
 })
 export class ContactEditComponent implements OnInit {
+  @ViewChild('contactForm') contactForm?: NgForm;
   @ViewChild('deleteModalContent') deleteModalContent?: any;
 
   alert?: Alert;
@@ -77,15 +78,11 @@ export class ContactEditComponent implements OnInit {
     }
   }
 
-  onClose(): void {
+  onAlertClose(): void {
     this.alert = undefined;
   }
 
-  onReset(contactForm: NgForm): void {
-    contactForm.resetForm();
-  }
-
-  onSubmit(): void {
+  onFormSubmit(): void {
     if (this.model.contactId > 0) {
       this.contactService.updateContact(this.model.contactId, this.model).subscribe(
         () => this.router.navigateByUrl('/contacts', {
@@ -110,6 +107,14 @@ export class ContactEditComponent implements OnInit {
           error.error
         )
       );
+    }
+  }
+
+  resetForm(): void {
+    if (this.model.contactId > 0) {
+      window.location.reload();
+    } else {
+      this.contactForm?.resetForm(new Contact());
     }
   }
 
