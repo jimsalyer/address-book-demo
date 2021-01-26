@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AddressBook.Api.Models;
 using AddressBook.Api.Services;
 using Microsoft.AspNetCore.Http;
@@ -20,21 +21,21 @@ namespace AddressBook.Api.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Contact> AddContact(ContactDto contactDto)
+        public async Task<ActionResult<Contact>> AddContactAsync(ContactDto contactDto)
         {
             if (ModelState.IsValid)
             {
-                var contact = _contactService.AddContact(contactDto);
-                return CreatedAtAction(nameof(GetContact), new { id = contact.ContactId }, contact);
+                var contact = await _contactService.AddContactAsync(contactDto);
+                return CreatedAtAction("GetContact", new { id = contact.ContactId }, contact);
             }
             return BadRequest();
         }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Contact> DeleteContact(int id)
+        public async Task<ActionResult<Contact>> DeleteContactAsync(int id)
         {
-            var contact = _contactService.DeleteContact(id);
+            var contact = await _contactService.DeleteContactAsync(id);
             if (contact != null)
             {
                 return contact;
@@ -44,9 +45,9 @@ namespace AddressBook.Api.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Contact> GetContact(int id)
+        public async Task<ActionResult<Contact>> GetContactAsync(int id)
         {
-            Contact contact = _contactService.GetContact(id);
+            Contact contact = await _contactService.GetContactAsync(id);
             if (contact != null)
             {
                 return contact;
@@ -55,19 +56,19 @@ namespace AddressBook.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Contact>> ListContacts(string filters, string sorts)
+        public async Task<ActionResult<IEnumerable<Contact>>> ListContactsAsync(string filters, string sorts)
         {
-            return _contactService.ListContacts(filters, sorts);
+            return await _contactService.ListContactsAsync(filters, sorts);
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Contact> UpdateContact(int id, ContactDto contactDto)
+        public async Task<ActionResult<Contact>> UpdateContactAsync(int id, ContactDto contactDto)
         {
             if (ModelState.IsValid)
             {
-                Contact contact = _contactService.UpdateContact(id, contactDto);
+                Contact contact = await _contactService.UpdateContactAsync(id, contactDto);
                 if (contact != null)
                 {
                     return contact;

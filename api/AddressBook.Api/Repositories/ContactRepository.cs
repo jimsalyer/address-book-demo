@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using AddressBook.Api.Data;
 using AddressBook.Api.Models;
 using AutoMapper;
@@ -22,33 +22,33 @@ namespace AddressBook.Api.Repositories
             _sieveProcessor = sieveProcessor;
         }
 
-        public Contact AddContact(ContactDto contactDto)
+        public async Task<Contact> AddContactAsync(ContactDto contactDto)
         {
             var contact = _mapper.Map<Contact>(contactDto);
-            _dbContext.Add(contact);
-            _dbContext.SaveChanges();
+            await _dbContext.AddAsync(contact);
+            await _dbContext.SaveChangesAsync();
             return contact;
         }
 
-        public Contact DeleteContact(int id)
+        public async Task<Contact> DeleteContactAsync(int id)
         {
-            var contact = _dbContext.Contacts.Find(id);
+            var contact = await _dbContext.Contacts.FindAsync(id);
             if (contact != null)
             {
                 _dbContext.Remove(contact);
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
             }
             return contact;
         }
 
-        public Contact GetContact(int id)
+        public async Task<Contact> GetContactAsync(int id)
         {
-            return _dbContext.Contacts
+            return await _dbContext.Contacts
                 .AsNoTracking()
-                .FirstOrDefault(c => c.ContactId == id);
+                .FirstOrDefaultAsync(c => c.ContactId == id);
         }
 
-        public List<Contact> ListContacts(string filters, string sorts, string defaultSorts)
+        public async Task<List<Contact>> ListContactsAsync(string filters, string sorts, string defaultSorts)
         {
             var sieveModel = new SieveModel
             {
@@ -58,17 +58,17 @@ namespace AddressBook.Api.Repositories
 
             var contacts = _dbContext.Contacts.AsNoTracking();
             var contactsResult = _sieveProcessor.Apply(sieveModel, contacts);
-            return contactsResult.ToList();
+            return await contactsResult.ToListAsync();
         }
 
-        public Contact UpdateContact(int id, ContactDto contactDto)
+        public async Task<Contact> UpdateContactAsync(int id, ContactDto contactDto)
         {
-            var contact = _dbContext.Contacts.Find(id);
+            var contact = await _dbContext.Contacts.FindAsync(id);
             if (contact != null)
             {
                 _mapper.Map(contactDto, contact);
                 _dbContext.Contacts.Update(contact);
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
             }
             return contact;
         }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AddressBook.Api.Models;
 using AddressBook.Api.Repositories;
 
@@ -13,29 +14,29 @@ namespace AddressBook.Api.Services
             _contactRepository = contactRepository;
         }
 
-        public Contact AddContact(ContactDto contactDto)
+        public async Task<Contact> AddContactAsync(ContactDto contactDto)
         {
-            return _contactRepository.AddContact(contactDto);
+            return await _contactRepository.AddContactAsync(contactDto);
         }
 
-        public Contact DeleteContact(int id)
+        public async Task<Contact> DeleteContactAsync(int id)
         {
-            return _contactRepository.DeleteContact(id);
+            return await _contactRepository.DeleteContactAsync(id);
         }
 
-        public Contact GetContact(int id)
+        public async Task<Contact> GetContactAsync(int id)
         {
-            return _contactRepository.GetContact(id);
+            return await _contactRepository.GetContactAsync(id);
         }
 
-        public List<Contact> ListContacts(string filters, string sorts)
+        public async Task<List<Contact>> ListContactsAsync(string filters, string sorts)
         {
-            return _contactRepository.ListContacts(filters, sorts, "lastName,firstName,middleName,displayName");
+            return await _contactRepository.ListContactsAsync(filters, sorts, "lastName,firstName,middleName,displayName");
         }
 
-        public Contact UpdateContact(int id, ContactDto contactDto)
+        public async Task<Contact> UpdateContactAsync(int id, ContactDto contactDto)
         {
-            return _contactRepository.UpdateContact(id, contactDto);
+            return await _contactRepository.UpdateContactAsync(id, contactDto);
         }
     }
 }
