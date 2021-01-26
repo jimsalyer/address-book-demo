@@ -58,7 +58,7 @@ export class ContactEditComponent implements OnInit {
         () => {
           this.contactService.deleteContact(this.model.contactId).subscribe(
             () => this.router.navigateByUrl('/contacts', {
-              state: new Alert(`${this.model.displayName} has been deleted.`, AlertType.SUCCESS)
+              state: new Alert(`${this.model.displayName} has been deleted.`, AlertType.SUCCESS, true)
             }),
             (error: HttpErrorResponse) => this.handleError(
               'ContactService.deleteContact',
@@ -86,7 +86,7 @@ export class ContactEditComponent implements OnInit {
     if (this.model.contactId > 0) {
       this.contactService.updateContact(this.model.contactId, this.model).subscribe(
         () => this.router.navigateByUrl('/contacts', {
-          state: new Alert(`${this.model.displayName} has been updated.`, AlertType.SUCCESS)
+          state: new Alert(`${this.model.displayName} has been updated.`, AlertType.SUCCESS, true)
         }),
         (error: HttpErrorResponse) => this.handleError(
           'ContactService.updateContact',
@@ -98,7 +98,7 @@ export class ContactEditComponent implements OnInit {
     } else {
       this.contactService.addContact(this.model).subscribe(
         () => this.router.navigateByUrl('/contacts', {
-          state: new Alert(`${this.model.displayName} has been added.`, AlertType.SUCCESS)
+          state: new Alert(`${this.model.displayName} has been added.`, AlertType.SUCCESS, true)
         }),
         (error: HttpErrorResponse) => this.handleError(
           'ContactService.addContact',
