@@ -98,19 +98,14 @@ namespace AddressBook.Api.Controllers
         [AllowAnonymous]
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<AuthToken>> RegisterUserAsync(UserRegisterDto userRegisterDto)
+        public async Task<IActionResult> RegisterUserAsync(UserRegisterDto userRegisterDto)
         {
             if (ModelState.IsValid)
             {
                 var user = await _userService.AddUserAsync(userRegisterDto);
                 if (user != null)
                 {
-                    var userValidateDto = new UserValidateDto
-                    {
-                        EmailAddress = user.EmailAddress,
-                        Password = userRegisterDto.Password
-                    };
-                    return await AuthenticateUserAsync(userValidateDto);
+                    return Ok();
                 }
                 return BadRequest(new { message = $"A user with the email address \"{user.EmailAddress}\" already exists." });
             }
