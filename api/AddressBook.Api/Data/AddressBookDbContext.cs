@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using AddressBook.Api.Helpers;
 using AddressBook.Api.Models;
 
 namespace AddressBook.Api.Data
@@ -15,5 +16,20 @@ namespace AddressBook.Api.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
             optionsBuilder.UseSnakeCaseNamingConvention();
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            HashUtilities.CreateHash("@dmin123", out byte[] passwordHash, out byte[] passwordSalt);
+
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    UserId = 1,
+                    EmailAddress = "admin@admin.com",
+                    PasswordHash = passwordHash,
+                    PasswordSalt = passwordSalt
+                }
+            );
+        }
     }
 }

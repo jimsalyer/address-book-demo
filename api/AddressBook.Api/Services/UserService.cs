@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
+using AddressBook.Api.Helpers;
 using AddressBook.Api.Models;
 using AddressBook.Api.Repositories;
 
@@ -29,7 +28,7 @@ namespace AddressBook.Api.Services
 
         public async Task<User> AddUserAsync(UserRegisterDto userRegisterDto)
         {
-            CreatePasswordHash(userRegisterDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            HashUtilities.CreateHash(userRegisterDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
             var user = new User
             {
                 EmailAddress = userRegisterDto.EmailAddress,
@@ -56,7 +55,7 @@ namespace AddressBook.Api.Services
 
         public async Task<User> UpdateUserPasswordAsync(int userId, UserPasswordDto userPasswordDto)
         {
-            CreatePasswordHash(userPasswordDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            HashUtilities.CreateHash(userPasswordDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
             return await _userRepository.UpdateUserPasswordAsync(userId, passwordHash, passwordSalt);
         }
 
@@ -68,34 +67,11 @@ namespace AddressBook.Api.Services
         public async Task<User> ValidateUserAsync(UserValidateDto userValidateDto)
         {
             var user = await _userRepository.GetUserByEmailAddressAsync(userValidateDto.EmailAddress);
-            if (VerifyPasswordHash(userValidateDto.Password, user.PasswordHash, user.PasswordSalt))
+            if (user != null && HashUtilities.VerifyHash(userValidateDto.Password, user.PasswordHash, user.PasswordSalt))
             {
                 return user;
             }
             return null;
-        }
-
-        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using var hmac = new HMACSHA512();
-            passwordSalt = hmac.Key;
-            passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-        }
-
-        private static bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
-        {
-            using (var hmac = new HMACSHA512(storedSalt))
-            {
-                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                for (int i = 0; i < computedHash.Length; i++)
-                {
-                    if (computedHash[i] != storedHash[i])
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
         }
     }
 }

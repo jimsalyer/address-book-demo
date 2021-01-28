@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Sieve.Attributes;
 
@@ -36,12 +37,18 @@ namespace AddressBook.Api.Models
         [MaxLength(2)]
         [Required]
         [Sieve(CanFilter = true, CanSort = true)]
-        public string State { get; set; }
+        public string Region { get; set; }
 
         [MaxLength(10)]
         [Required]
         [Sieve(CanFilter = true, CanSort = true)]
-        public string Zip { get; set; }
+        public string PostalCode { get; set; }
+
+        [DefaultValue("United States")]
+        [MaxLength(255)]
+        [RegularExpression(@"^United States$")]
+        [Required]
+        public string Country { get; set; }
 
         [MaxLength(255)]
         [Required]
