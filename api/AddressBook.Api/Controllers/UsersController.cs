@@ -31,7 +31,7 @@ namespace AddressBook.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public async Task<ActionResult<UserTokenDto>> AuthenticateUserAsync(UserValidateDto userValidateDto)
+        public async Task<ActionResult<AuthToken>> AuthenticateUserAsync(UserValidateDto userValidateDto)
         {
             if (ModelState.IsValid)
             {
@@ -54,11 +54,9 @@ namespace AddressBook.Api.Controllers
                     var token = tokenHandler.CreateToken(tokenDescriptor);
                     var tokenString = tokenHandler.WriteToken(token);
 
-                    var userTokenDto = new UserTokenDto
+                    var userTokenDto = new AuthToken
                     {
-                        UserId = user.UserId,
-                        EmailAddress = user.EmailAddress,
-                        Token = tokenString
+                        AccessToken = tokenString
                     };
                     return userTokenDto;
                 }
@@ -100,7 +98,7 @@ namespace AddressBook.Api.Controllers
         [AllowAnonymous]
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<UserTokenDto>> RegisterUserAsync(UserRegisterDto userRegisterDto)
+        public async Task<ActionResult<AuthToken>> RegisterUserAsync(UserRegisterDto userRegisterDto)
         {
             if (ModelState.IsValid)
             {
