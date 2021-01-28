@@ -1,11 +1,11 @@
-import { AlertType } from './../../shared/alert-type';
-import { Alert } from './../../shared/alert';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
-import { Contact } from '../../models/contact';
+import { Contact } from '../../models/contact.model';
 import { ContactService } from '../../services/contact.service';
+import { Alert } from '../../shared/alert';
+import { AlertType } from '../../shared/alert-type';
 
 @Component({
   selector: 'app-contact-list',

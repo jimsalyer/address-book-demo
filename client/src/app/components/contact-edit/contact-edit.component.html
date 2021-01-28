@@ -8,7 +8,7 @@
   {{alert.message}}
 </ngb-alert>
 
-<form #contactForm="ngForm" (ngSubmit)="contactForm.form.valid && onFormSubmit()">
+<form #contactForm="ngForm" (ngSubmit)="contactForm.valid && onFormSubmit()">
   <input #contactId="ngModel" [(ngModel)]="model.contactId" name="contactId" type="hidden" readonly>
   <div class="form-row">
     <div class="col-lg-4 mb-3">
@@ -64,11 +64,11 @@
         State
         <span class="text-danger">*</span>
       </label>
-      <select #state="ngModel" [(ngModel)]="model.state" name="state" required class="custom-select"
-        [class.is-invalid]="state.touched && state.invalid">
-        <option value="" [selected]="!state.value">Select State</option>
-        <option *ngFor="let region of regions" [value]="region.abbreviation"
-          [selected]="state.value === region.abbreviation">{{region.name}}</option>
+      <select #region="ngModel" [(ngModel)]="model.region" name="region" required class="custom-select"
+        [class.is-invalid]="region.touched && region.invalid">
+        <option value="" [selected]="!region.value">Select State</option>
+        <option *ngFor="let reg of regions" [value]="reg.abbreviation" [selected]="region.value === reg.abbreviation">
+          {{reg.name}}</option>
       </select>
     </div>
     <div class="col-lg-4 mb-3">
@@ -76,8 +76,8 @@
         Zip Code
         <span class="text-danger">*</span>
       </label>
-      <input #zip="ngModel" [(ngModel)]="model.zip" name="zip" type="text" required maxlength="10" class="form-control"
-        [class.is-invalid]="zip.touched && zip.invalid">
+      <input #postalCode="ngModel" [(ngModel)]="model.postalCode" name="postalCode" type="text" required maxlength="10"
+        class="form-control" [class.is-invalid]="postalCode.touched && postalCode.invalid">
     </div>
   </div>
   <div class="form-row">
@@ -98,7 +98,7 @@
         maxlength="255" class="form-control" [class.is-invalid]="emailAddress.touched && emailAddress.invalid">
     </div>
   </div>
-  <button type="submit" [disabled]="contactForm.form.invalid" class="btn btn-primary mr-2">Submit</button>
+  <button type="submit" [disabled]="contactForm.invalid" class="btn btn-primary mr-2">Submit</button>
   <button type="button" [disabled]="!contactForm.dirty" class="btn btn-secondary mr-2"
     (click)="resetForm()">Reset</button>
   <button *ngIf="model.contactId > 0" type="button" class="btn btn-danger" (click)="onDelete()">Delete</button>

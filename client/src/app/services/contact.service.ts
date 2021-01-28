@@ -2,15 +2,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Contact } from '../models/contact';
+import { Contact } from '../models/contact.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContactService {
-  baseUrl = `${environment.apiUrl}/v1/contacts`;
+  private baseUrl = `${environment.apiUrl}/v1/contacts`;
 
-  httpOptions = {
+  private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
     })

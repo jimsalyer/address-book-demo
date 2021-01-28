@@ -4,11 +4,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NGXLogger } from 'ngx-logger';
-import { Contact } from '../../models/contact';
+import { Contact } from '../../models/contact.model';
 import { ContactService } from '../../services/contact.service';
 import { Alert } from '../../shared/alert';
 import { AlertType } from '../../shared/alert-type';
-import { Region } from './../../models/region';
+import { Region } from '../../models/region.model';
 import { RegionService } from './../../services/region.service';
 
 @Component({
