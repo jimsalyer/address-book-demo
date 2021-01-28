@@ -1,7 +1,7 @@
 <h2>Contacts</h2>
 
 <p>
-  <a [routerLink]="['/contacts/new']" class="btn btn-success">Add New</a>
+  <a routerLink="/contacts/new" class="btn btn-success">Add New</a>
 </p>
 
 <ngb-alert *ngIf="alert" [type]="alert.type" [dismissible]="alert.dismissible" (closed)="onAlertClose()">
