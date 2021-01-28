@@ -1,8 +1,10 @@
 <div class="row justify-content-center">
-  <div class="col-md-8 col-lg-6 col-xl-4">
-    <form #loginForm="ngForm" class="card" (ngSubmit)="loginForm.valid && onFormSubmit()">
+  <div class="col-lg-8 col-xl-6">
+    <ngb-alert *ngIf="alert" [type]="alert.type" [dismissible]="alert.dismissible">{{alert.message}}</ngb-alert>
+    <ngb-alert *ngIf="isAuthenticated()" type="warning" [dismissible]="false">You are currently logged in. If you wish
+      to log in as another user, please log out first.</ngb-alert>
+    <form *ngIf="!isAuthenticated()" #loginForm="ngForm" class="card" (ngSubmit)="loginForm.valid && onFormSubmit()">
       <div class="card-body">
-        <ngb-alert *ngIf="alert" [type]="alert.type" [dismissible]="alert.dismissible">{{alert.message}}</ngb-alert>
         <div class="form-group">
           <input #emailAddress="ngModel" [(ngModel)]="model.emailAddress" name="emailAddress" type="text" required email
             maxlength="255" placeholder="Email Address" class="form-control"

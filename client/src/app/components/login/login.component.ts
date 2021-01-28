@@ -28,6 +28,10 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  isAuthenticated(): boolean {
+    return this.authService.isAuthenticated();
+  }
+
   onFormSubmit(): void {
     this.authService.login(this.model.emailAddress, this.model.password).subscribe(
       () => {
