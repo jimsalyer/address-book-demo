@@ -1,5 +1,5 @@
-using AutoMapper;
 using System.ComponentModel.DataAnnotations.Schema;
+using AutoMapper;
 
 namespace AddressBook.Api.Models
 {

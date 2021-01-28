@@ -11,7 +11,7 @@
     "client-ng": "cd client && npm run ng",
     "client-start": "cd client && npm start",
     "client-test": "cd client && npm test",
-    "db-start": "cd db && docker-compose up -d",
-    "db-stop": "cd db && docker-compose down -v"
+    "db-start": "cd api && docker-compose up -d",
+    "db-stop": "cd api && docker-compose down -v"
   }
 }

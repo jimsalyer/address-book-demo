@@ -12,10 +12,10 @@ namespace AddressBook.Api.Repositories
     public interface IContactRepository
     {
         Task<Contact> AddContactAsync(ContactDto contactDto);
-        Task<Contact> DeleteContactAsync(int id);
-        Task<Contact> GetContactAsync(int id);
+        Task<Contact> DeleteContactAsync(int contactId);
+        Task<Contact> GetContactAsync(int contactId);
         Task<List<Contact>> ListContactsAsync(string filters, string sorts, string defaultSorts);
-        Task<Contact> UpdateContactAsync(int id, ContactDto contactDto);
+        Task<Contact> UpdateContactAsync(int contactId, ContactDto contactDto);
     }
 
     public class ContactRepository : IContactRepository
@@ -39,9 +39,9 @@ namespace AddressBook.Api.Repositories
             return contact;
         }
 
-        public async Task<Contact> DeleteContactAsync(int id)
+        public async Task<Contact> DeleteContactAsync(int contactId)
         {
-            var contact = await _dbContext.Contacts.FindAsync(id);
+            var contact = await _dbContext.Contacts.FindAsync(contactId);
             if (contact != null)
             {
                 _dbContext.Remove(contact);
@@ -50,11 +50,11 @@ namespace AddressBook.Api.Repositories
             return contact;
         }
 
-        public async Task<Contact> GetContactAsync(int id)
+        public async Task<Contact> GetContactAsync(int contactId)
         {
             return await _dbContext.Contacts
                 .AsNoTracking()
-                .FirstOrDefaultAsync(c => c.ContactId == id);
+                .SingleOrDefaultAsync(c => c.ContactId == contactId);
         }
 
         public async Task<List<Contact>> ListContactsAsync(string filters, string sorts, string defaultSorts)
@@ -70,9 +70,9 @@ namespace AddressBook.Api.Repositories
             return await contactsResult.ToListAsync();
         }
 
-        public async Task<Contact> UpdateContactAsync(int id, ContactDto contactDto)
+        public async Task<Contact> UpdateContactAsync(int contactId, ContactDto contactDto)
         {
-            var contact = await _dbContext.Contacts.FindAsync(id);
+            var contact = await _dbContext.Contacts.FindAsync(contactId);
             if (contact != null)
             {
                 _mapper.Map(contactDto, contact);

@@ -8,10 +8,10 @@ namespace AddressBook.Api.Services
     public interface IContactService
     {
         Task<Contact> AddContactAsync(ContactDto contactDto);
-        Task<Contact> DeleteContactAsync(int id);
-        Task<Contact> GetContactAsync(int id);
+        Task<Contact> DeleteContactAsync(int contactId);
+        Task<Contact> GetContactAsync(int contactId);
         Task<List<Contact>> ListContactsAsync(string filters, string sorts);
-        Task<Contact> UpdateContactAsync(int id, ContactDto contactDto);
+        Task<Contact> UpdateContactAsync(int contactId, ContactDto contactDto);
     }
 
     public class ContactService : IContactService
@@ -28,14 +28,14 @@ namespace AddressBook.Api.Services
             return await _contactRepository.AddContactAsync(contactDto);
         }
 
-        public async Task<Contact> DeleteContactAsync(int id)
+        public async Task<Contact> DeleteContactAsync(int contactId)
         {
-            return await _contactRepository.DeleteContactAsync(id);
+            return await _contactRepository.DeleteContactAsync(contactId);
         }
 
-        public async Task<Contact> GetContactAsync(int id)
+        public async Task<Contact> GetContactAsync(int contactId)
         {
-            return await _contactRepository.GetContactAsync(id);
+            return await _contactRepository.GetContactAsync(contactId);
         }
 
         public async Task<List<Contact>> ListContactsAsync(string filters, string sorts)
@@ -43,9 +43,9 @@ namespace AddressBook.Api.Services
             return await _contactRepository.ListContactsAsync(filters, sorts, "lastName,firstName,middleName,displayName");
         }
 
-        public async Task<Contact> UpdateContactAsync(int id, ContactDto contactDto)
+        public async Task<Contact> UpdateContactAsync(int contactId, ContactDto contactDto)
         {
-            return await _contactRepository.UpdateContactAsync(id, contactDto);
+            return await _contactRepository.UpdateContactAsync(contactId, contactDto);
         }
     }
 }

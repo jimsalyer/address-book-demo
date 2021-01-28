@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AddressBook.Api.Models;
-using AddressBook.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using AddressBook.Api.Models;
+using AddressBook.Api.Services;
 
 namespace AddressBook.Api.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/v1/contacts")]
     public class ContactsController : ControllerBase
     {
