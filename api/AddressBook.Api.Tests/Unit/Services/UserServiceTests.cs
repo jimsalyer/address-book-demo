@@ -74,9 +74,10 @@ namespace AddressBook.Api.Tests.Unit.Services
             };
 
             var user = await _userService.AddUserAsync(userRegisterDto);
+            var hashVerification = user != null && HashUtilities.VerifyHash(userRegisterDto.Password, user.PasswordHash, user.PasswordSalt);
 
             _userRepositoryMock.Verify(repo => repo.AddUserAsync(user), Times.Once);
-            Assert.True(HashUtilities.VerifyHash(userRegisterDto.Password, user.PasswordHash, user.PasswordSalt));
+            Assert.True(hashVerification);
         }
 
         [Fact]
@@ -116,9 +117,10 @@ namespace AddressBook.Api.Tests.Unit.Services
             };
 
             var user = await _userService.UpdateUserPasswordAsync(_userId, userPasswordDto);
+            var hashVerification = user != null && HashUtilities.VerifyHash(userPasswordDto.Password, user.PasswordHash, user.PasswordSalt);
 
             _userRepositoryMock.Verify(repo => repo.UpdateUserPasswordAsync(_userId, user.PasswordHash, user.PasswordSalt));
-            Assert.True(HashUtilities.VerifyHash(userPasswordDto.Password, user.PasswordHash, user.PasswordSalt));
+            Assert.True(hashVerification);
         }
 
         [Fact]
@@ -158,10 +160,11 @@ namespace AddressBook.Api.Tests.Unit.Services
             };
 
             var user = await _userService.ValidateUserAsync(userValidateDto);
+            var hashVerification = user != null && HashUtilities.VerifyHash(userValidateDto.Password, user.PasswordHash, user.PasswordSalt);
 
             Assert.NotNull(user);
             Assert.Equal(user.EmailAddress, userValidateDto.EmailAddress);
-            Assert.True(HashUtilities.VerifyHash(userValidateDto.Password, user.PasswordHash, user.PasswordSalt));
+            Assert.True(hashVerification);
         }
 
         [Fact]
