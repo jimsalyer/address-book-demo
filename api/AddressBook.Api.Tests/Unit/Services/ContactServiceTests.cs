@@ -37,6 +37,7 @@ namespace AddressBook.Api.Tests.Unit.Services
             };
 
             await _contactService.AddContactAsync(contactDto);
+
             _contactRepositoryMock.Verify(repo => repo.AddContactAsync(contactDto), Times.Once);
         }
 
@@ -44,7 +45,9 @@ namespace AddressBook.Api.Tests.Unit.Services
         public async Task DeleteContactAsync_CallsRepoDeleteContactAsync_WithContactId()
         {
             var contactId = 1;
+
             await _contactService.GetContactAsync(contactId);
+
             _contactRepositoryMock.Verify(repo => repo.GetContactAsync(contactId), Times.Once);
         }
 
@@ -52,17 +55,20 @@ namespace AddressBook.Api.Tests.Unit.Services
         public async Task GetContactAsync_CallsRepoGetContactAsync_WithContactId()
         {
             var contactId = 1;
+
             await _contactService.DeleteContactAsync(contactId);
+
             _contactRepositoryMock.Verify(repo => repo.DeleteContactAsync(contactId), Times.Once);
         }
 
         [Fact]
-        public async Task ListContactsAsync_CallsRepoContactsAsync_WithFiltersAndSortsAndDefaultSorts()
+        public async Task ListContactsAsync_CallsRepoListContactsAsync_WithFiltersAndSortsAndDefaultSorts()
         {
             var filters = "lastName==Smith";
             var sorts = "displayName";
 
             await _contactService.ListContactsAsync(filters, sorts);
+
             _contactRepositoryMock.Verify(repo => repo.ListContactsAsync(filters, sorts, "lastName,firstName,middleName,displayName"), Times.Once);
         }
 
@@ -86,6 +92,7 @@ namespace AddressBook.Api.Tests.Unit.Services
             };
 
             await _contactService.UpdateContactAsync(contactId, contactDto);
+
             _contactRepositoryMock.Verify(repo => repo.UpdateContactAsync(contactId, contactDto), Times.Once);
         }
     }

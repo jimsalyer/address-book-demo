@@ -37,6 +37,16 @@
         "/consoleloggerparameters:NoSummary"
       ],
       "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "test",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "test",
+        "${workspaceFolder}/AddressBook.Api.Tests/AddressBook.Api.Tests.csproj"
+      ],
+      "problemMatcher": "$msCompile"
     }
   ]
 }
