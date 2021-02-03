@@ -1,24 +1,65 @@
 <div class="row justify-content-center">
   <div class="col-lg-8 col-xl-6">
-    <ngb-alert *ngIf="alert" [type]="alert.type" [dismissible]="alert.dismissible">{{alert.message}}</ngb-alert>
-    <ngb-alert *ngIf="isAuthenticated()" type="warning" [dismissible]="false">You are currently logged in. If you wish
-      to log in as another user, please log out first.</ngb-alert>
-    <form *ngIf="!isAuthenticated()" #loginForm="ngForm" class="card" (ngSubmit)="loginForm.valid && onFormSubmit()">
+    <ngb-alert
+      *ngIf="alert"
+      [type]="alert.type"
+      [dismissible]="alert.dismissible"
+      >{{ alert.message }}</ngb-alert
+    >
+    <ngb-alert *ngIf="isAuthenticated()" type="warning" [dismissible]="false"
+      >You are currently logged in. If you wish to log in as another user,
+      please log out first.</ngb-alert
+    >
+    <form
+      *ngIf="!isAuthenticated()"
+      #loginForm="ngForm"
+      class="card"
+      (ngSubmit)="loginForm.valid && onFormSubmit()"
+    >
       <div class="card-body">
         <div class="form-group">
-          <input #emailAddress="ngModel" [(ngModel)]="model.emailAddress" name="emailAddress" type="text" required email
-            maxlength="255" placeholder="Email Address" class="form-control"
-            [class.is-invalid]="emailAddress.touched && emailAddress.invalid">
+          <input
+            #emailAddress="ngModel"
+            [(ngModel)]="model.emailAddress"
+            name="emailAddress"
+            type="text"
+            required
+            email
+            maxlength="255"
+            placeholder="Email Address"
+            class="form-control"
+            [class.is-invalid]="emailAddress.touched && emailAddress.invalid"
+          />
         </div>
         <div class="form-group">
-          <input #password="ngModel" [(ngModel)]="model.password" name="password" type="password" required
-            maxlength="255" placeholder="Password" class="form-control"
-            [class.is-invalid]="password.touched && password.invalid">
+          <input
+            #password="ngModel"
+            [(ngModel)]="model.password"
+            name="password"
+            type="password"
+            required
+            maxlength="255"
+            placeholder="Password"
+            class="form-control"
+            [class.is-invalid]="password.touched && password.invalid"
+          />
         </div>
       </div>
       <div class="card-footer">
-        <button type="submit" [disabled]="loginForm.invalid" class="btn btn-primary mr-2">Login</button>
-        <button type="reset" [disabled]="!loginForm.dirty" class="btn btn-secondary">Reset</button>
+        <button
+          type="submit"
+          [disabled]="loginForm.invalid"
+          class="btn btn-primary mr-2"
+        >
+          Login
+        </button>
+        <button
+          type="reset"
+          [disabled]="!loginForm.dirty"
+          class="btn btn-secondary"
+        >
+          Reset
+        </button>
       </div>
     </form>
   </div>

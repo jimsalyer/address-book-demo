@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
 import { AuthToken } from '../models/auth-token.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private baseUrl = `${environment.apiUrl}/v1/users`;
@@ -15,7 +15,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private jwtHelperService: JwtHelperService
-  ) { }
+  ) {}
 
   isAuthenticated(): boolean {
     const accessToken = localStorage.getItem('accessToken') ?? undefined;
@@ -23,18 +23,33 @@ export class AuthService {
   }
 
   login(emailAddress: string, password: string): Observable<AuthToken> {
-    return this.http.post<AuthToken>(`${this.baseUrl}/authenticate`, { emailAddress, password })
-      .pipe(tap((authToken) => {
-        localStorage.setItem('accessToken', authToken.accessToken);
-      }));
+    return this.http
+      .post<AuthToken>(`${this.baseUrl}/authenticate`, {
+        emailAddress,
+        password,
+      })
+      .pipe(
+        tap((authToken) => {
+          localStorage.setItem('accessToken', authToken.accessToken);
+        })
+      );
   }
 
   logout(): void {
     localStorage.removeItem('accessToken');
   }
 
-  register(emailAddress: string, password: string, confirmPassword: string): Observable<boolean> {
-    return this.http.post<boolean>(`${this.baseUrl}/register`, { emailAddress, password, confirmPassword })
+  register(
+    emailAddress: string,
+    password: string,
+    confirmPassword: string
+  ): Observable<boolean> {
+    return this.http
+      .post<boolean>(`${this.baseUrl}/register`, {
+        emailAddress,
+        password,
+        confirmPassword,
+      })
       .pipe(tap(() => this.login(emailAddress, password)));
   }
 }

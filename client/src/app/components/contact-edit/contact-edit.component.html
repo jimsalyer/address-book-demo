@@ -1,36 +1,70 @@
-<h2>{{model.contactId > 0 ? 'Update' : 'Add New'}} Contact</h2>
+<h2>{{ model.contactId > 0 ? 'Update' : 'Add New' }} Contact</h2>
 
 <p>
   <a routerLink="/contacts" class="btn btn-secondary">Back to Contact List</a>
 </p>
 
-<ngb-alert *ngIf="alert" [type]="alert.type" [dismissible]="alert.dismissible" (closed)="onAlertClose()">
-  {{alert.message}}
+<ngb-alert
+  *ngIf="alert"
+  [type]="alert.type"
+  [dismissible]="alert.dismissible"
+  (closed)="onAlertClose()"
+>
+  {{ alert.message }}
 </ngb-alert>
 
 <form #contactForm="ngForm" (ngSubmit)="contactForm.valid && onFormSubmit()">
-  <input #contactId="ngModel" [(ngModel)]="model.contactId" name="contactId" type="hidden" readonly>
+  <input
+    #contactId="ngModel"
+    [(ngModel)]="model.contactId"
+    name="contactId"
+    type="hidden"
+    readonly
+  />
   <div class="form-row">
     <div class="col-lg-4 mb-3">
       <label for="firstName">
         First Name
         <span class="text-danger">*</span>
       </label>
-      <input #firstName="ngModel" [(ngModel)]="model.firstName" name="firstName" type="text" required maxlength="255"
-        class="form-control" [class.is-invalid]="firstName.touched && firstName.invalid">
+      <input
+        #firstName="ngModel"
+        [(ngModel)]="model.firstName"
+        name="firstName"
+        type="text"
+        required
+        maxlength="255"
+        class="form-control"
+        [class.is-invalid]="firstName.touched && firstName.invalid"
+      />
     </div>
     <div class="col-lg-4 mb-3">
       <label for="middleName">Middle Name</label>
-      <input #middleName="ngModel" [(ngModel)]="model.middleName" name="middleName" type="text" maxlength="255"
-        class="form-control" [class.is-invalid]="middleName.touched && middleName.invalid">
+      <input
+        #middleName="ngModel"
+        [(ngModel)]="model.middleName"
+        name="middleName"
+        type="text"
+        maxlength="255"
+        class="form-control"
+        [class.is-invalid]="middleName.touched && middleName.invalid"
+      />
     </div>
     <div class="col-lg-4 mb-3">
       <label for="lastName">
         Last Name
         <span class="text-danger">*</span>
       </label>
-      <input #lastName="ngModel" [(ngModel)]="model.lastName" name="lastName" type="text" required maxlength="255"
-        class="form-control" [class.is-invalid]="lastName.touched && lastName.invalid">
+      <input
+        #lastName="ngModel"
+        [(ngModel)]="model.lastName"
+        name="lastName"
+        type="text"
+        required
+        maxlength="255"
+        class="form-control"
+        [class.is-invalid]="lastName.touched && lastName.invalid"
+      />
     </div>
   </div>
   <div class="form-group">
@@ -38,17 +72,32 @@
       Display Name
       <span class="text-danger">*</span>
     </label>
-    <input #displayName="ngModel" [(ngModel)]="model.displayName" name="displayName" type="text" required
-      maxlength="255" class="form-control" [class.is-invalid]="displayName.touched && displayName.invalid">
+    <input
+      #displayName="ngModel"
+      [(ngModel)]="model.displayName"
+      name="displayName"
+      type="text"
+      required
+      maxlength="255"
+      class="form-control"
+      [class.is-invalid]="displayName.touched && displayName.invalid"
+    />
   </div>
   <div class="form-group">
     <label for="streetAddress">
       Street Address
       <span class="text-danger">*</span>
     </label>
-    <textarea #streetAddress="ngModel" [(ngModel)]="model.streetAddress" name="streetAddress" rows="2" required
-      maxlength="255" class="form-control"
-      [class.is-invalid]="streetAddress.touched && streetAddress.invalid"></textarea>
+    <textarea
+      #streetAddress="ngModel"
+      [(ngModel)]="model.streetAddress"
+      name="streetAddress"
+      rows="2"
+      required
+      maxlength="255"
+      class="form-control"
+      [class.is-invalid]="streetAddress.touched && streetAddress.invalid"
+    ></textarea>
   </div>
   <div class="form-row">
     <div class="col-lg-4 mb-3">
@@ -56,19 +105,38 @@
         City
         <span class="text-danger">*</span>
       </label>
-      <input #city="ngModel" [(ngModel)]="model.city" name="city" type="text" required maxlength="255"
-        class="form-control" [class.is-invalid]="city.touched && city.invalid">
+      <input
+        #city="ngModel"
+        [(ngModel)]="model.city"
+        name="city"
+        type="text"
+        required
+        maxlength="255"
+        class="form-control"
+        [class.is-invalid]="city.touched && city.invalid"
+      />
     </div>
     <div class="col-lg-4 mb-3">
       <label for="state">
         State
         <span class="text-danger">*</span>
       </label>
-      <select #region="ngModel" [(ngModel)]="model.region" name="region" required class="custom-select"
-        [class.is-invalid]="region.touched && region.invalid">
+      <select
+        #region="ngModel"
+        [(ngModel)]="model.region"
+        name="region"
+        required
+        class="custom-select"
+        [class.is-invalid]="region.touched && region.invalid"
+      >
         <option value="" [selected]="!region.value">Select State</option>
-        <option *ngFor="let reg of regions" [value]="reg.abbreviation" [selected]="region.value === reg.abbreviation">
-          {{reg.name}}</option>
+        <option
+          *ngFor="let reg of regions"
+          [value]="reg.abbreviation"
+          [selected]="region.value === reg.abbreviation"
+        >
+          {{ reg.name }}
+        </option>
       </select>
     </div>
     <div class="col-lg-4 mb-3">
@@ -76,8 +144,16 @@
         Zip Code
         <span class="text-danger">*</span>
       </label>
-      <input #postalCode="ngModel" [(ngModel)]="model.postalCode" name="postalCode" type="text" required maxlength="10"
-        class="form-control" [class.is-invalid]="postalCode.touched && postalCode.invalid">
+      <input
+        #postalCode="ngModel"
+        [(ngModel)]="model.postalCode"
+        name="postalCode"
+        type="text"
+        required
+        maxlength="10"
+        class="form-control"
+        [class.is-invalid]="postalCode.touched && postalCode.invalid"
+      />
     </div>
   </div>
   <div class="form-row">
@@ -86,22 +162,58 @@
         Phone Number
         <span class="text-danger">*</span>
       </label>
-      <input #phoneNumber="ngModel" [(ngModel)]="model.phoneNumber" name="phoneNumber" type="text" required
-        maxlength="255" class="form-control" [class.is-invalid]="phoneNumber.touched && phoneNumber.invalid">
+      <input
+        #phoneNumber="ngModel"
+        [(ngModel)]="model.phoneNumber"
+        name="phoneNumber"
+        type="text"
+        required
+        maxlength="255"
+        class="form-control"
+        [class.is-invalid]="phoneNumber.touched && phoneNumber.invalid"
+      />
     </div>
     <div class="col-lg-6 mb-3">
       <label for="emailAddress">
         Email Address
         <span class="text-danger">*</span>
       </label>
-      <input #emailAddress="ngModel" [(ngModel)]="model.emailAddress" name="emailAddress" type="text" required email
-        maxlength="255" class="form-control" [class.is-invalid]="emailAddress.touched && emailAddress.invalid">
+      <input
+        #emailAddress="ngModel"
+        [(ngModel)]="model.emailAddress"
+        name="emailAddress"
+        type="text"
+        required
+        email
+        maxlength="255"
+        class="form-control"
+        [class.is-invalid]="emailAddress.touched && emailAddress.invalid"
+      />
     </div>
   </div>
-  <button type="submit" [disabled]="contactForm.invalid" class="btn btn-primary mr-2">Submit</button>
-  <button type="button" [disabled]="!contactForm.dirty" class="btn btn-secondary mr-2"
-    (click)="resetForm()">Reset</button>
-  <button *ngIf="model.contactId > 0" type="button" class="btn btn-danger" (click)="onDelete()">Delete</button>
+  <button
+    type="submit"
+    [disabled]="contactForm.invalid"
+    class="btn btn-primary mr-2"
+  >
+    Submit
+  </button>
+  <button
+    type="button"
+    [disabled]="!contactForm.dirty"
+    class="btn btn-secondary mr-2"
+    (click)="resetForm()"
+  >
+    Reset
+  </button>
+  <button
+    *ngIf="model.contactId > 0"
+    type="button"
+    class="btn btn-danger"
+    (click)="onDelete()"
+  >
+    Delete
+  </button>
 </form>
 
 <ng-template #deleteModalContent let-modal>
@@ -109,10 +221,14 @@
     <h4 class="modal-title">Delete Contact</h4>
   </div>
   <div class="modal-body">
-    <p class="lead">Are you sure you want to delete {{model.displayName}}?</p>
+    <p class="lead">Are you sure you want to delete {{ model.displayName }}?</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-danger" (click)="modal.close()">Yes</button>
-    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">No</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close()">
+      Yes
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+      No
+    </button>
   </div>
 </ng-template>

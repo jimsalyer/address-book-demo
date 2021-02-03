@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Region } from '../models/region.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RegionService {
   regions: Region[] = [
@@ -64,10 +64,10 @@ export class RegionService {
     new Region('WA', 'Washington'),
     new Region('WV', 'West Virginia'),
     new Region('WI', 'Wisconsin'),
-    new Region('WY', 'Wyoming')
+    new Region('WY', 'Wyoming'),
   ];
 
-  constructor() { }
+  constructor() {}
 
   getRegions(): Region[] {
     return this.regions;

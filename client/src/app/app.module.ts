@@ -21,7 +21,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     NavbarComponent,
     HomeComponent,
     ContactEditComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -33,18 +33,20 @@ import { NavbarComponent } from './components/navbar/navbar.component';
         allowedDomains: [new URL(environment.apiUrl).host],
         disallowedRoutes: [
           `${environment.apiUrl}/v1/users/authenticate`,
-          `${environment.apiUrl}/v1/users/register`
+          `${environment.apiUrl}/v1/users/register`,
         ],
-        tokenGetter: () => localStorage.getItem('accessToken')
-      }
+        tokenGetter: () => localStorage.getItem('accessToken'),
+      },
     }),
     LoggerModule.forRoot({
-      level: environment.production ? NgxLoggerLevel.WARN : NgxLoggerLevel.DEBUG
+      level: environment.production
+        ? NgxLoggerLevel.WARN
+        : NgxLoggerLevel.DEBUG,
     }),
     NgbModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

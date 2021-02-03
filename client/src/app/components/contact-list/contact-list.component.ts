@@ -10,7 +10,7 @@ import { AlertType } from '../../shared/alert-type';
 @Component({
   selector: 'app-contact-list',
   templateUrl: './contact-list.component.html',
-  styleUrls: ['./contact-list.component.scss']
+  styleUrls: ['./contact-list.component.scss'],
 })
 export class ContactListComponent implements OnInit, OnDestroy {
   alert?: Alert;
@@ -20,12 +20,16 @@ export class ContactListComponent implements OnInit, OnDestroy {
   constructor(
     private logger: NGXLogger,
     private contactService: ContactService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     const state = window.history.state;
     if (state && state.message) {
-      this.alert = new Alert(state.message, state.type ?? AlertType.INFO, state.dismissible ?? false);
+      this.alert = new Alert(
+        state.message,
+        state.type ?? AlertType.INFO,
+        state.dismissible ?? false
+      );
     }
     this.listContactsSubscription = this.listContacts();
   }
@@ -36,7 +40,7 @@ export class ContactListComponent implements OnInit, OnDestroy {
 
   listContacts(): Subscription {
     return this.contactService.listContacts().subscribe(
-      (contacts) => this.contacts = contacts,
+      (contacts) => (this.contacts = contacts),
       (error: HttpErrorResponse) => {
         this.logger.error('ContactService.listContacts', error.error);
         this.alert = new Alert('Could not list contacts.', AlertType.DANGER);

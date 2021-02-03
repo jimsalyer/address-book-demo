@@ -11,7 +11,7 @@ import { AuthService } from './../../services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   @ViewChild('loginForm') loginForm?: NgForm;
@@ -23,24 +23,28 @@ export class LoginComponent implements OnInit {
     private logger: NGXLogger,
     private router: Router,
     private authService: AuthService
-  ) { }
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   isAuthenticated(): boolean {
     return this.authService.isAuthenticated();
   }
 
   onFormSubmit(): void {
-    this.authService.login(this.model.emailAddress, this.model.password).subscribe(
-      () => {
-        this.router.navigateByUrl('/');
-      },
-      (error: HttpErrorResponse) => {
-        this.logger.error('AuthService.login', this.model, error.error);
-        this.alert = new Alert(error.error.message ?? 'An unknown error occurred.', AlertType.DANGER);
-      }
-    );
+    this.authService
+      .login(this.model.emailAddress, this.model.password)
+      .subscribe(
+        () => {
+          this.router.navigateByUrl('/');
+        },
+        (error: HttpErrorResponse) => {
+          this.logger.error('AuthService.login', this.model, error.error);
+          this.alert = new Alert(
+            error.error.message ?? 'An unknown error occurred.',
+            AlertType.DANGER
+          );
+        }
+      );
   }
 }

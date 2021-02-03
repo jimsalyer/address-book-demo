@@ -8,9 +8,8 @@ describe('ContactEditComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ContactEditComponent ]
-    })
-    .compileComponents();
+      declarations: [ContactEditComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

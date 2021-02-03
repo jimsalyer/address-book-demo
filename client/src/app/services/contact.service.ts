@@ -5,21 +5,23 @@ import { environment } from '../../environments/environment';
 import { Contact } from '../models/contact.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ContactService {
   private baseUrl = `${environment.apiUrl}/v1/contacts`;
 
   private httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
+      'Content-Type': 'application/json',
+    }),
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   addContact(contact: Contact): Observable<Contact> {
-    return this.http.post<Contact>(this.baseUrl, JSON.stringify(contact), { ...this.httpOptions });
+    return this.http.post<Contact>(this.baseUrl, JSON.stringify(contact), {
+      ...this.httpOptions,
+    });
   }
 
   deleteContact(id: number): Observable<Contact> {
@@ -35,6 +37,10 @@ export class ContactService {
   }
 
   updateContact(id: number, contact: Contact): Observable<Contact> {
-    return this.http.put<Contact>(`${this.baseUrl}/${id}`, JSON.stringify(contact), { ...this.httpOptions });
+    return this.http.put<Contact>(
+      `${this.baseUrl}/${id}`,
+      JSON.stringify(contact),
+      { ...this.httpOptions }
+    );
   }
 }

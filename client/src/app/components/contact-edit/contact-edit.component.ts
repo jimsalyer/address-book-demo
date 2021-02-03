@@ -14,7 +14,7 @@ import { RegionService } from './../../services/region.service';
 @Component({
   selector: 'app-contact-edit',
   templateUrl: './contact-edit.component.html',
-  styleUrls: ['./contact-edit.component.scss']
+  styleUrls: ['./contact-edit.component.scss'],
 })
 export class ContactEditComponent implements OnInit {
   @ViewChild('contactForm') contactForm?: NgForm;
@@ -45,7 +45,10 @@ export class ContactEditComponent implements OnInit {
         (error: HttpErrorResponse) => {
           this.logger.error('ContactService.getContact', id, error.error);
           this.router.navigateByUrl('/contacts', {
-            state: new Alert(`A contact with ID ${id} could not be found.`, AlertType.DANGER)
+            state: new Alert(
+              `A contact with ID ${id} could not be found.`,
+              AlertType.DANGER
+            ),
           });
         }
       );
@@ -57,15 +60,21 @@ export class ContactEditComponent implements OnInit {
       this.modalService.open(this.deleteModalContent).result.then(
         () => {
           this.contactService.deleteContact(this.model.contactId).subscribe(
-            () => this.router.navigateByUrl('/contacts', {
-              state: new Alert(`${this.model.displayName} has been deleted.`, AlertType.SUCCESS, true)
-            }),
-            (error: HttpErrorResponse) => this.handleError(
-              'ContactService.deleteContact',
-              'Could not delete contact.',
-              this.model.contactId,
-              error.error
-            )
+            () =>
+              this.router.navigateByUrl('/contacts', {
+                state: new Alert(
+                  `${this.model.displayName} has been deleted.`,
+                  AlertType.SUCCESS,
+                  true
+                ),
+              }),
+            (error: HttpErrorResponse) =>
+              this.handleError(
+                'ContactService.deleteContact',
+                'Could not delete contact.',
+                this.model.contactId,
+                error.error
+              )
           );
         },
         () => {}
@@ -84,28 +93,42 @@ export class ContactEditComponent implements OnInit {
 
   onFormSubmit(): void {
     if (this.model.contactId > 0) {
-      this.contactService.updateContact(this.model.contactId, this.model).subscribe(
-        () => this.router.navigateByUrl('/contacts', {
-          state: new Alert(`${this.model.displayName} has been updated.`, AlertType.SUCCESS, true)
-        }),
-        (error: HttpErrorResponse) => this.handleError(
-          'ContactService.updateContact',
-          'Could not update contact.',
-          this.model,
-          error.error
-        )
-      );
+      this.contactService
+        .updateContact(this.model.contactId, this.model)
+        .subscribe(
+          () =>
+            this.router.navigateByUrl('/contacts', {
+              state: new Alert(
+                `${this.model.displayName} has been updated.`,
+                AlertType.SUCCESS,
+                true
+              ),
+            }),
+          (error: HttpErrorResponse) =>
+            this.handleError(
+              'ContactService.updateContact',
+              'Could not update contact.',
+              this.model,
+              error.error
+            )
+        );
     } else {
       this.contactService.addContact(this.model).subscribe(
-        () => this.router.navigateByUrl('/contacts', {
-          state: new Alert(`${this.model.displayName} has been added.`, AlertType.SUCCESS, true)
-        }),
-        (error: HttpErrorResponse) => this.handleError(
-          'ContactService.addContact',
-          'Could not add contact.',
-          this.model,
-          error.error
-        )
+        () =>
+          this.router.navigateByUrl('/contacts', {
+            state: new Alert(
+              `${this.model.displayName} has been added.`,
+              AlertType.SUCCESS,
+              true
+            ),
+          }),
+        (error: HttpErrorResponse) =>
+          this.handleError(
+            'ContactService.addContact',
+            'Could not add contact.',
+            this.model,
+            error.error
+          )
       );
     }
   }
@@ -118,7 +141,11 @@ export class ContactEditComponent implements OnInit {
     }
   }
 
-  private handleError(logMessage: string, displayMessage: string, ...data: any[]): void {
+  private handleError(
+    logMessage: string,
+    displayMessage: string,
+    ...data: any[]
+  ): void {
     this.logger.error(logMessage, data);
     this.alert = new Alert(displayMessage, AlertType.DANGER);
   }

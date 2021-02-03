@@ -1,6 +1,3 @@
 export class Region {
-  constructor(
-    public abbreviation: string,
-    public name: string
-  ) {}
+  constructor(public abbreviation: string, public name: string) {}
 }

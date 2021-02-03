@@ -6,5 +6,5 @@ export enum AlertType {
   PRIMARY = 'primary',
   SECONDARY = 'secondary',
   SUCCESS = 'success',
-  WARNING = 'warning'
+  WARNING = 'warning',
 }

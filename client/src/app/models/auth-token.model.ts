@@ -1,5 +1,3 @@
 export class AuthToken {
-  constructor(
-    public accessToken: string
-  ) {}
+  constructor(public accessToken: string) {}
 }
