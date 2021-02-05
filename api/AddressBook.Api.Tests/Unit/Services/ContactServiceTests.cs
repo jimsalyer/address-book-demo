@@ -19,7 +19,7 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task AddContactAsync_CallsRepoAddContactAsync_WithContactDto()
+        public async Task AddContactAsync_WithContactDto_CallsRepoAddContactAsync()
         {
             var contactDto = new ContactDto
             {
@@ -42,7 +42,7 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task DeleteContactAsync_CallsRepoDeleteContactAsync_WithContactId()
+        public async Task DeleteContactAsync_WithContactId_CallsRepoDeleteContactAsync()
         {
             var contactId = 1;
 
@@ -52,7 +52,7 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task GetContactAsync_CallsRepoGetContactAsync_WithContactId()
+        public async Task GetContactAsync_WithContactId_CallsRepoGetContactAsync()
         {
             var contactId = 1;
 
@@ -62,7 +62,7 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task ListContactsAsync_CallsRepoListContactsAsync_WithFiltersAndSortsAndDefaultSorts()
+        public async Task ListContactsAsync_WithFiltersAndSortsAndDefaultSorts_CallsRepoListContactsAsync()
         {
             var filters = "lastName==Smith";
             var sorts = "displayName";
@@ -73,7 +73,7 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task UpdateContactAsync_CallsRepoUpdateContactAsync_WithContactIdAndContactDto()
+        public async Task UpdateContactAsync_WithContactIdAndContactDto_CallsRepoUpdateContactAsync()
         {
             var contactId = 1;
             var contactDto = new ContactDto

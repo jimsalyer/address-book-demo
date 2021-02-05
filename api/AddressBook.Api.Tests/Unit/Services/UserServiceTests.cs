@@ -64,7 +64,7 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task AddUserAsync_CreatesUser_AndCallsRepoAddUserAsync_WithUser()
+        public async Task AddUserAsync_WithUserRegisterDto_CreatesUser_AndCallsRepoAddUserAsync()
         {
             var userRegisterDto = new UserRegisterDto
             {
@@ -81,7 +81,7 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task DeleteUserAsync_CallsRepoDeleteUserAsync_WithUserId()
+        public async Task DeleteUserAsync_WithUserId_CallsRepoDeleteUserAsync()
         {
             await _userService.DeleteUserAsync(_userId);
 
@@ -89,7 +89,7 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task GetUserAsync_CallsRepoGetUserAsync_WithUserId()
+        public async Task GetUserAsync_WithUserId_CallsRepoGetUserAsync()
         {
             await _userService.GetUserAsync(_userId);
 
@@ -97,7 +97,7 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task ListUsersAsync_CallsRepoListUsersAsync_WithFiltersAndSortsAndDefaultSorts()
+        public async Task ListUsersAsync_WithFiltersAndSortsAndDefaultSorts_CallsRepoListUsersAsync()
         {
             var filters = $"emailAddress=={_userEmailAddress}";
             var sorts = "emailAddress";
@@ -108,7 +108,7 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task UpdateUserPasswordAsync_CallsRepoUpdateUserPasswordAsync_WithPasswordHashAndPasswordSalt()
+        public async Task UpdateUserPasswordAsync_WithPasswordHashAndPasswordSalt_CallsRepoUpdateUserPasswordAsync()
         {
             var userPasswordDto = new UserPasswordDto
             {
@@ -124,7 +124,7 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task UpdateUserProfileAsync_CallsRepoUpdateUserProfileAsync_WithUserIdAndUserProfileDto()
+        public async Task UpdateUserProfileAsync_WithUserIdAndUserProfileDto_CallsRepoUpdateUserProfileAsync()
         {
             var userProfileDto = new UserProfileDto
             {
@@ -137,7 +137,7 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task ValidateUserAsync_CallsRepoGetUserByEmailAddressAsync_With()
+        public async Task ValidateUserAsync_CallsRepoGetUserByEmailAddressAsync()
         {
             var userValidateDto = new UserValidateDto
             {
@@ -151,7 +151,7 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task ValidateUserAsync_IfUserIsFoundByEmailAddressAndPasswordHashesMatch_ReturnsUser()
+        public async Task ValidateUserAsync_WithValidUserValidateDto_ReturnsUser()
         {
             var userValidateDto = new UserValidateDto
             {
@@ -168,7 +168,7 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task ValidateUserAsync_IfUserIsNotFoundByEmailAddress_ReturnsNull()
+        public async Task ValidateUserAsync_WithInvalidUserValidateDtoEmailAddress_ReturnsNull()
         {
             var userValidateDto = new UserValidateDto
             {
@@ -182,7 +182,7 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task ValidateUserAsync_IfUserIsFoundByEmailAddressButPasswordHashesDoNotMatch_ReturnsNull()
+        public async Task ValidateUserAsync_WithInvalidUserValidateDtoPassword_ReturnsNull()
         {
             var userValidateDto = new UserValidateDto
             {

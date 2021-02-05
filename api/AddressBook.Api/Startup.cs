@@ -31,9 +31,11 @@ namespace AddressBook.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AddressBookDbContext>(
-                options => options.UseNpgsql(Configuration.GetConnectionString("AddressBookConnectionString"))
-            );
+            services.AddDbContext<AddressBookDbContext>(options =>
+            {
+                options.UseNpgsql(Configuration.GetConnectionString("AddressBookConnectionString"));
+                options.UseSnakeCaseNamingConvention();
+            });
 
             services.AddAutoMapper(typeof(Startup));
 

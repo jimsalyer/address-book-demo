@@ -14,9 +14,6 @@ namespace AddressBook.Api.Data
         {
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
-            optionsBuilder.UseSnakeCaseNamingConvention();
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             HashUtilities.CreateHash("@dmin123", out byte[] passwordHash, out byte[] passwordSalt);
