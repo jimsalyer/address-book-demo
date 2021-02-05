@@ -3,6 +3,7 @@ using AddressBook.Api.Helpers;
 using AddressBook.Api.Models;
 using AddressBook.Api.Repositories;
 using AddressBook.Api.Services;
+using FluentAssertions;
 using Moq;
 using Xunit;
 
@@ -64,7 +65,7 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task AddUserAsync_WithUserRegisterDto_CreatesUser_AndCallsRepoAddUserAsync()
+        public async Task AddUserAsync_WithUserRegisterDto_CreatesUserAndCallsRepoAddUserAsync()
         {
             var userRegisterDto = new UserRegisterDto
             {
@@ -81,11 +82,12 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task DeleteUserAsync_WithUserId_CallsRepoDeleteUserAsync()
+        public async Task DeleteUserAsync_WithUserId_CallsRepoDeleteUserAsyncAndReturnsDeletedUser()
         {
-            await _userService.DeleteUserAsync(_userId);
+            var user = await _userService.DeleteUserAsync(_userId);
 
             _userRepositoryMock.Verify(repo => repo.DeleteUserAsync(_userId), Times.Once);
+            user.UserId.Should().Be(_userId);
         }
 
         [Fact]
@@ -101,14 +103,15 @@ namespace AddressBook.Api.Tests.Unit.Services
         {
             var filters = $"emailAddress=={_userEmailAddress}";
             var sorts = "emailAddress";
+            var defaultSorts = "emailAddress";
 
             await _userService.ListUsersAsync(filters, sorts);
 
-            _userRepositoryMock.Verify(repo => repo.ListUsersAsync(filters, sorts, "emailAddress"), Times.Once);
+            _userRepositoryMock.Verify(repo => repo.ListUsersAsync(filters, sorts, defaultSorts), Times.Once);
         }
 
         [Fact]
-        public async Task UpdateUserPasswordAsync_WithPasswordHashAndPasswordSalt_CallsRepoUpdateUserPasswordAsync()
+        public async Task UpdateUserPasswordAsync_WithUserIdAndUserPasswordDto_CallsRepoUpdateUserPasswordAsyncAndReturnsUpdatedUser()
         {
             var userPasswordDto = new UserPasswordDto
             {
@@ -124,34 +127,21 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task UpdateUserProfileAsync_WithUserIdAndUserProfileDto_CallsRepoUpdateUserProfileAsync()
+        public async Task UpdateUserProfileAsync_WithUserIdAndUserProfileDto_CallsRepoUpdateUserProfileAsyncAndReturnsUpdatedUser()
         {
             var userProfileDto = new UserProfileDto
             {
                 EmailAddress = _userEmailAddress
             };
 
-            await _userService.UpdateUserProfileAsync(_userId, userProfileDto);
+            var user = await _userService.UpdateUserProfileAsync(_userId, userProfileDto);
 
             _userRepositoryMock.Verify(repo => repo.UpdateUserProfileAsync(_userId, userProfileDto), Times.Once);
+            user.EmailAddress.Should().Be(_userEmailAddress);
         }
 
         [Fact]
-        public async Task ValidateUserAsync_CallsRepoGetUserByEmailAddressAsync()
-        {
-            var userValidateDto = new UserValidateDto
-            {
-                EmailAddress = _userEmailAddress,
-                Password = _userPassword
-            };
-
-            await _userService.ValidateUserAsync(userValidateDto);
-
-            _userRepositoryMock.Verify(repo => repo.GetUserByEmailAddressAsync(userValidateDto.EmailAddress), Times.Once);
-        }
-
-        [Fact]
-        public async Task ValidateUserAsync_WithValidUserValidateDto_ReturnsUser()
+        public async Task ValidateUserAsync_WithUserValidateDto_CallsRepoGetUserByEmailAddressAsyncAndReturnsMatchingUser()
         {
             var userValidateDto = new UserValidateDto
             {
@@ -160,15 +150,15 @@ namespace AddressBook.Api.Tests.Unit.Services
             };
 
             var user = await _userService.ValidateUserAsync(userValidateDto);
-            var hashVerification = user != null && HashUtilities.VerifyHash(userValidateDto.Password, user.PasswordHash, user.PasswordSalt);
+            var hashVerification = user != null && HashUtilities.VerifyHash(_userPassword, user.PasswordHash, user.PasswordSalt);
 
-            Assert.NotNull(user);
-            Assert.Equal(user.EmailAddress, userValidateDto.EmailAddress);
+            _userRepositoryMock.Verify(repo => repo.GetUserByEmailAddressAsync(userValidateDto.EmailAddress), Times.Once);
+            user.EmailAddress.Should().Be(_userEmailAddress);
             Assert.True(hashVerification);
         }
 
         [Fact]
-        public async Task ValidateUserAsync_WithInvalidUserValidateDtoEmailAddress_ReturnsNull()
+        public async Task ValidateUserAsync_WithUserValidateDto_ReturnsNull_IfEmailAddressDoesNotMatch()
         {
             var userValidateDto = new UserValidateDto
             {
@@ -182,7 +172,7 @@ namespace AddressBook.Api.Tests.Unit.Services
         }
 
         [Fact]
-        public async Task ValidateUserAsync_WithInvalidUserValidateDtoPassword_ReturnsNull()
+        public async Task ValidateUserAsync_WithUserValidateDto_ReturnsNull_IfPasswordDoesNotMatch()
         {
             var userValidateDto = new UserValidateDto
             {

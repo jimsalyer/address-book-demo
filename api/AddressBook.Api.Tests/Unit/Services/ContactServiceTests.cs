@@ -66,10 +66,11 @@ namespace AddressBook.Api.Tests.Unit.Services
         {
             var filters = "lastName==Smith";
             var sorts = "displayName";
+            var defaultSorts = "lastName,firstName,middleName,displayName";
 
             await _contactService.ListContactsAsync(filters, sorts);
 
-            _contactRepositoryMock.Verify(repo => repo.ListContactsAsync(filters, sorts, "lastName,firstName,middleName,displayName"), Times.Once);
+            _contactRepositoryMock.Verify(repo => repo.ListContactsAsync(filters, sorts, defaultSorts), Times.Once);
         }
 
         [Fact]

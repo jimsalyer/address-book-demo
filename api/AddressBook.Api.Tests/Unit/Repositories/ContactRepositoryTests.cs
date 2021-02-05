@@ -96,13 +96,13 @@ namespace AddressBook.Api.Tests.Unit.Repositories
         }
 
         [Fact]
-        public async Task AddContactAsync_WithValidContact_ReturnsAddedContact_WithGeneratedId()
+        public async Task AddContactAsync_WithContact_ReturnsAddedContactWithGeneratedId()
         {
 
         }
 
         [Fact]
-        public async Task DeleteContactAsync_WithValidContactId_RemovesAndReturnsContact()
+        public async Task DeleteContactAsync_WithContactId_RemovesAndReturnsContact()
         {
             var contactId = 2;
             var deletedContact = await _dbContext.Contacts
@@ -119,7 +119,7 @@ namespace AddressBook.Api.Tests.Unit.Repositories
         }
 
         [Fact]
-        public async Task DeleteContactAsync_WithInvalidContactId_ReturnsNull()
+        public async Task DeleteContactAsync_WithContactId_ReturnsNull_IfContactIsNotFound()
         {
             var contactId = 3;
 
@@ -129,7 +129,7 @@ namespace AddressBook.Api.Tests.Unit.Repositories
         }
 
         [Fact]
-        public async Task GetContactAsync_WithValidContactId_ReturnsContact()
+        public async Task GetContactAsync_WithContactId_ReturnsContact()
         {
             var contactId = 1;
             var expectedContact = await _dbContext.Contacts
@@ -142,7 +142,7 @@ namespace AddressBook.Api.Tests.Unit.Repositories
         }
 
         [Fact]
-        public async Task GetContactAsync_WithInvalidContactId_ReturnsNull()
+        public async Task GetContactAsync_WithContactId_ReturnsNull_IfContactIsNotFound()
         {
             var contactId = 3;
 
